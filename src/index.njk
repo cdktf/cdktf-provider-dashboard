@@ -13,7 +13,7 @@ layout: base
         <ul class="flex flex-row flex-wrap">
             {% for workflowName, workflowItems in repo.workflows %}
                 <li class="m-1">
-                    <a href={{workflowItems[0].url}} target="_blank">
+                    <a href={{workflowItems[0].html_url}} target="_blank">
                         <span class="text-sm p-1 rounded {{ "bg-green-300" if workflowItems[0].conclusion === "success" else "bg-red-400 " }}">{{workflowName}}</span>
                     </a>
                 </li>
