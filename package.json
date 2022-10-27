@@ -1,0 +1,14 @@
+{
+  "name": "check-prebuilt-provider-status",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:mutahhir/check-prebuilt-provider-status.git",
+  "author": "Mutahhir Hayat <mutahhir.hayat@hashicorp.com>",
+  "license": "MIT",
+  "scripts": {
+	  "build": "npx @11ty/eleventy",
+	  "serve": "npx @11ty/eleventy --serve",
+	  "debug": "DEBUG=* npx @11ty/eleventy"
+  }
+}
+
