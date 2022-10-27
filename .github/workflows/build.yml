@@ -22,13 +22,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install dependencies & build
+      - name: Install dependencies
         run: |
           yarn install --frozen-lockfile
-          yarn build
 
       - name: Grab data updates
         run: node ./scripts/collect-status.js
+
+      - name: Build Site
+        run: yarn build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

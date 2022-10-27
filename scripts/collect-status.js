@@ -4,6 +4,39 @@ const { Octokit } = require("@octokit/rest")
 const { throttling } = require("@octokit/plugin-throttling")
 const fs = require("fs").promises
 
+async function processWorkflows(data) {
+    const runSet = {}
+    for (const run of data.workflow_runs) {
+        const name = run.name
+        if (!runSet[name]) {
+            runSet[name] = [run]
+        } else {
+            runSet[name].push(run)
+        }
+    }
+
+    Object.keys(runSet).forEach(workflowName => {
+        runSet[workflowName] = runSet[workflowName].sort((runA, runB) => {
+            const createdA = new Date(runA.created_at)
+            const createdB = new Date(runB.created_at)
+
+            return createdB - createdA
+        })
+    })
+
+    return runSet
+}
+
+async function getWorkflows(github, repoName) {
+    console.log("Workflows for: ", repoName)
+    const { data } = await github.actions.listWorkflowRunsForRepo({
+        owner: "cdktf",
+        repo: repoName
+    })
+
+    return processWorkflows(data)
+}
+
 
 async function getAllPrebuiltRepos(github) {
     console.log("Getting all repo names")
@@ -33,37 +66,15 @@ async function getAllPrebuiltRepos(github) {
             }
         }
     });
+
     const repos = await getAllPrebuiltRepos(github)
 
     for (const repo of repos) {
-        console.log("Workflows for: ", repo.name)
-        const { data } = await github.actions.listWorkflowRunsForRepo({
-            owner: "cdktf",
-            repo: repo.name
-        })
-        const runSet = {}
-        for (const run in data.workflow_runs) {
-            const name = run.name
-            if (!runSet[name]) {
-                runSet[name] = [run]
-            } else {
-                runSet[name].push(run)
-            }
-        }
-
-        Object.keys(runSet).forEach(workflowName => {
-            runSet[workflowName] = runSet[workflowName].sort((runA, runB) => {
-                const createdA = new Date(runA.created_at)
-                const createdB = new Date(runB.created_at)
-
-                return createdA - createdB
-            })
-        })
-
-        repo.workflows = runSet
+        const workflows = await getWorkflows(github, repo.name)
+        repo.workflows = workflows;
     }
 
-    await fs.writeFile("./repos.json", JSON.stringify(repos, null, 2), "utf8")
+    await fs.writeFile("./src/_data/repos.json", JSON.stringify(repos, null, 2), "utf8")
 
     console.log("Done")
 })()

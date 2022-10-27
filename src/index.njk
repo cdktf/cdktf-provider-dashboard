@@ -1,0 +1,18 @@
+<main class="repo-grid">
+{% for repo in repos %}
+    <div class="repo">
+        <h2>{{ repo.name }}</h2>
+        <p>Workflows:</p>
+        <ul>
+            {% for workflowName, workflowItems in repo.workflows %}
+                <li>
+                    <a href={{workflowItems[0].url}}>
+                        <span>{{workflowName}}</span>
+                        <span>{{ workflowItems[0].conclusion }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endfor %}
+</main>
