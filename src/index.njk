@@ -2,7 +2,8 @@
 layout: base
 ---
 <main class="m-6 w-screen">
-<h1 class="text-4xl font-bold mb-6 mt-3">CDKTF Pre-built provider health dashboard</h1>
+<h1 class="text-4xl font-bold mt-3">CDKTF Pre-built provider health dashboard</h1>
+<p class="text-xs uppercase mb-6">Last Updated: {{page.date.toUTCString()}}</p>
 <div class="flex flex-row flex-wrap">
 {% for repo in repos %}
     <div class="bg-gray-100 rounded p-2 drop-shadow-md m-4 w-1/5">
