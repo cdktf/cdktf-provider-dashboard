@@ -1,22 +1,24 @@
 ---
 layout: base
 ---
-<main class="m-6">
+<main class="m-6 w-screen">
 <h1 class="text-4xl font-bold mb-6 mt-3">CDKTF Pre-built provider health dashboard</h1>
+<div class="flex flex-row flex-wrap">
 {% for repo in repos %}
-    <div class="mb-4 bg-gray-100 rounded p-2">
-        <h2 class="text-xl capitalize">
+    <div class="bg-gray-100 rounded p-2 drop-shadow-md m-4 w-1/5">
+        <h2 class="text-xl capitalize font-bold">
             <a href={{repo.html_url}} target="_blank">{{ repo.name.replace("cdktf-provider-", "") }}</a>
         </h2>
-        <ul class="flex flex-auto items-center justify-start ">
+        <ul class="flex flex-row flex-wrap">
             {% for workflowName, workflowItems in repo.workflows %}
-                <li class="mr-2">
+                <li class="m-1">
                     <a href={{workflowItems[0].url}} target="_blank">
-                        <span class="text-sm p-1 rounded {{ "bg-green-300" if workflowItems[0].conclusion === "success" else "bg-red-400" }}">{{workflowName}}</span>
+                        <span class="text-sm p-1 rounded {{ "bg-green-300" if workflowItems[0].conclusion === "success" else "bg-red-400 " }}">{{workflowName}}</span>
                     </a>
                 </li>
             {% endfor %}
         </ul>
     </div>
 {% endfor %}
+</div>
 </main>
