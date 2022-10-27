@@ -6,11 +6,12 @@
   "author": "Mutahhir Hayat <mutahhir.hayat@hashicorp.com>",
   "license": "MIT",
   "scripts": {
-    "build": "run-s build:*",
+    "build": "run-s clean build:*",
     "debug": "DEBUG=* npx @11ty/eleventy",
     "serve": "npm-run-all -p dev:*",
     "dev:11ty": "npx @11ty/eleventy --serve",
     "dev:css": "tailwindcss -i src/assets/css/tailwind.css -o _site/assets/css/tailwind.css --watch --postcss",
+    "clean": "rm -rf _site",
     "build:11ty": "npx @11ty/eleventy",
     "build:css": "tailwindcss -i src/assets/css/tailwind.css -o _site/assets/css/tailwind.css --postcss"
   },
