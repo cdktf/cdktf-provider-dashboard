@@ -14,7 +14,7 @@ layout: base
             {% for workflowName, workflowItems in repo.workflows %}
                 <li class="m-1">
                     <a href={{workflowItems[0].html_url}} target="_blank">
-                        <span class="text-sm p-1 rounded {{ "bg-green-300" if workflowItems[0].conclusion === "success" else "bg-red-400 " }}">{{workflowName}}</span>
+                        <div class="text-sm p-1 rounded {{ "bg-green-300" if workflowItems[0].conclusion === "success" else "bg-red-400 " }}">{{workflowName}} <span class="text-xs block text-gray-600">{{workflowItems[0].created_at | daysAgo }}</span></div>
                     </a>
                 </li>
             {% endfor %}
