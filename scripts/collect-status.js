@@ -74,9 +74,8 @@ async function getPackageJson(github, repoName) {
 async function getLatestCdktfVersion() {
     const response = await fetch(`https://registry.npmjs.org/cdktf`)
     const data = await response.json();
-    const respositoryInfo = JSON.parse(data)
 
-    return respositoryInfo["dist-tags"].latest
+    return data["dist-tags"].latest
 }
 
 async function getLatestProviderVersion(name, url) {
