@@ -113,7 +113,7 @@ async function getAllPrebuiltRepos(github) {
 
     const repos = await getAllPrebuiltRepos(github)
 
-    for (const repo of repos.slice(0, 3)) {
+    for (const repo of repos) {
         const workflows = await getWorkflows(github, repo.name)
         const allIssues = await getIssues(github, repo.name)
         const latestRelease = await getRelease(github, repo.name)
@@ -132,7 +132,7 @@ async function getAllPrebuiltRepos(github) {
         }
     }
 
-    await fs.writeFile("./src/_data/repos-provider.json", JSON.stringify(repos, null, 2), "utf8")
+    await fs.writeFile("./src/_data/repos.json", JSON.stringify(repos, null, 2), "utf8")
 
     console.log("Done")
 })()
