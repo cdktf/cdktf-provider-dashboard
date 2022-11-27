@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@primer/octicons": "^17.9.0",
-    "luxon": "^3.1.0"
+    "luxon": "^3.1.0",
+    "semver": "^7.3.8"
   }
 }

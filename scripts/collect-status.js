@@ -3,6 +3,7 @@
 const { Octokit } = require("@octokit/rest")
 const { throttling } = require("@octokit/plugin-throttling")
 const fs = require("fs").promises
+const semver = require("semver")
 
 async function processWorkflows(data) {
     const runSet = {}
@@ -70,6 +71,14 @@ async function getPackageJson(github, repoName) {
     return data
 }
 
+async function getLatestCdktfVersion() {
+    const response = await fetch(`https://registry.npmjs.org/cdktf`)
+    const data = await response.json();
+    const respositoryInfo = JSON.parse(data)
+
+    return respositoryInfo["dist-tags"].latest
+}
+
 async function getLatestProviderVersion(name, url) {
     console.log("Fetching provider info: ", name)
     const response = await fetch(url)
@@ -112,6 +121,7 @@ async function getAllPrebuiltRepos(github) {
     });
 
     const repos = await getAllPrebuiltRepos(github)
+    const latestCdktfVersion = await getLatestCdktfVersion()
 
     for (const repo of repos) {
         const workflows = await getWorkflows(github, repo.name)
@@ -123,6 +133,7 @@ async function getAllPrebuiltRepos(github) {
         repo.issues = allIssues.filter(issue => !issue.pull_request);
         repo.packageJson = JSON.parse(Buffer.from(packageJson.content, "base64").toString())
         repo.latestRelease = latestRelease
+        repo.latestCdktfVersion = latestCdktfVersion
 
         if (repo.packageJson.cdktf && repo.packageJson.cdktf.provider) {
             const registryUrl = repo.packageJson.cdktf.provider.name.replace(`registry.terraform.io`, "https://registry.terraform.io/v2/providers") + "?include=provider-versions"

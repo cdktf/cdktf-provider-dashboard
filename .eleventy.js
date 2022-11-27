@@ -5,6 +5,7 @@ module.exports = function (eleventyConfig) {
   // Filters
   eleventyConfig.addFilter("sortRepos", require('./src/filters/sortRepos'))
   eleventyConfig.addFilter("daysAgo", require('./src/filters/daysAgo'))
+  eleventyConfig.addFilter("semver", require('./src/filters/semverCompare'))
 
   // Shortcodes
   eleventyConfig.addShortcode("githubIcon", require('./src/shortcodes/githubIcon'))
