@@ -6,6 +6,9 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("sortRepos", require('./src/filters/sortRepos'))
   eleventyConfig.addFilter("daysAgo", require('./src/filters/daysAgo'))
 
+  // Shortcodes
+  eleventyConfig.addShortcode("githubIcon", require('./src/shortcodes/githubIcon'))
+
   return {
     dir: {
       input: "src",

@@ -26,6 +26,7 @@
     "tailwindcss": "^3.2.1"
   },
   "dependencies": {
+    "@primer/octicons": "^17.9.0",
     "luxon": "^3.1.0"
   }
 }

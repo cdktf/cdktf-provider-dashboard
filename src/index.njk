@@ -7,8 +7,16 @@ layout: base
 <div class="flex flex-row flex-wrap">
 {% for repo in repos | sortRepos %}
     <div class="bg-gray-100 rounded p-2 drop-shadow-md m-4 w-1/5">
-        <h2 class="text-xl capitalize font-bold">
+        <h2 class="text-xl capitalize font-bold flex flex-row items-center space-x-2 ml-2 text-gray-600">
             <a href={{repo.html_url}} target="_blank">{{ repo.name.replace("cdktf-provider-", "") }}</a>
+            <span class="flex flex-row items-center space-x-1">
+                <span class="fill-green-500">{% githubIcon 'issue-opened' %}</span>
+                <span class="text-xs {{ "text-green-500" if repo.open_issues_count === 0 else "text-red-500 " }}">{{ repo.open_issues_count }}</span>
+            </span>
+            <span class="flex flex-row items-center space-x-1">
+                <span class="fill-purple-500">{% githubIcon 'git-pull-request' %}</span>
+                <span class="text-xs {{ "text-green-500" if repo.open_issues_count === 0 else "text-red-500 " }}">{{ repo.open_issues_count }}</span>
+            </span>
         </h2>
         <ul class="flex flex-row flex-wrap">
             {% for workflowName, workflowItems in repo.workflows %}

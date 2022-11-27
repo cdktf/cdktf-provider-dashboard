@@ -37,6 +37,17 @@ async function getWorkflows(github, repoName) {
     return processWorkflows(data)
 }
 
+async function getIssues(github, repoName) {
+    console.log("Issues for: ", repoName)
+    const { data } = await github.rest.issues.listForRepo({
+        owner: "cdktf",
+        repo: repoName,
+        state: "open"
+    })
+
+    return data
+}
+
 
 async function getAllPrebuiltRepos(github) {
     console.log("Getting all repo names")
@@ -71,7 +82,10 @@ async function getAllPrebuiltRepos(github) {
 
     for (const repo of repos) {
         const workflows = await getWorkflows(github, repo.name)
+        const allIssues = await getIssues(github, repo.name)
         repo.workflows = workflows;
+        repo.pulls = allIssues.filter(issue => !!issue.pull_request);
+        repo.issues = allIssues.filter(issue => !issue.pull_request);
     }
 
     await fs.writeFile("./src/_data/repos.json", JSON.stringify(repos, null, 2), "utf8")
