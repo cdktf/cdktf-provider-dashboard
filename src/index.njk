@@ -5,7 +5,7 @@ layout: base
 <h1 class="text-4xl font-bold mt-3">CDKTF Pre-built provider health dashboard</h1>
 <p class="text-xs uppercase mb-6">Last Updated: {{page.date.toUTCString()}}</p>
 <div class="flex flex-row flex-wrap">
-{% for repo in repos | sortRepos %}
+{% for repo in repos %}
     <div class="bg-gray-100 rounded p-2 drop-shadow-md m-4 w-1/5">
         <h2 class="text-xl capitalize font-bold flex flex-row items-center space-x-2 ml-2 text-gray-600">
             <a href={{repo.html_url}} target="_blank">{{ repo.name.replace("cdktf-provider-", "") }}</a>
@@ -17,6 +17,15 @@ layout: base
                 <span class="fill-purple-500">{% githubIcon 'git-pull-request' %}</span>
                 <span class="text-xs {{ "text-green-500" if repo.pulls.length === 0 else "text-red-500 " }}">{{ repo.pulls.length }}</span>
             </a>
+        </h2>
+        <h3 class="text-sm capitalize flex flex-row items-center space-x-2 ml-2 text-gray-600">
+            <a class="flex flex-row items-center space-x-1" href="{{repo.html_url}}/issues">
+                <span>{% githubIcon 'tag' %}</span>
+                <a href={{repo.latestRelease.html_url}} target="_blank">{{ repo.latestRelease.tag_name }}</a>
+            </a>
+            <span title="Provider Version">{{ repo.packageJson.cdktf.provider.version }}</span>
+            <span title"CDKTF Dependency Version">{{ repo.packageJson.peerDependencies.cdktf }}</span>
+            <span>{{ repo.latestRelease.published_at | daysAgo }}</span>
         </h2>
         <ul class="flex flex-row flex-wrap">
             {% for workflowName, workflowItems in repo.workflows %}

@@ -48,6 +48,39 @@ async function getIssues(github, repoName) {
     return data
 }
 
+async function getRelease(github, repoName) {
+    console.log("Release for: ", repoName)
+    const { data } = await github.rest.repos.getLatestRelease({
+        owner: "cdktf",
+        repo: repoName,
+        state: "open"
+    })
+
+    return data
+}
+
+async function getPackageJson(github, repoName) {
+    console.log("Package.json for: ", repoName)
+    const { data } = await github.rest.repos.getContent({
+        owner: "cdktf",
+        repo: repoName,
+        path: "package.json"
+    })
+
+    return data
+}
+
+async function getLatestProviderVersion(name, url) {
+    console.log("Fetching provider info: ", name)
+    const response = await fetch(url)
+    const data = await response.json()
+    const providerVersion = data.included
+        .map(data => ({ version: data.attributes.version, published: data.attributes["published-at"] }))
+        .sort((a, b) => a.published < b.published ? 1 : (a.published > b.published) ? -1 : 0)[0].version
+
+    return providerVersion
+}
+
 
 async function getAllPrebuiltRepos(github) {
     console.log("Getting all repo names")
@@ -80,15 +113,26 @@ async function getAllPrebuiltRepos(github) {
 
     const repos = await getAllPrebuiltRepos(github)
 
-    for (const repo of repos) {
+    for (const repo of repos.slice(0, 3)) {
         const workflows = await getWorkflows(github, repo.name)
         const allIssues = await getIssues(github, repo.name)
+        const latestRelease = await getRelease(github, repo.name)
+        const packageJson = await getPackageJson(github, repo.name)
         repo.workflows = workflows;
         repo.pulls = allIssues.filter(issue => !!issue.pull_request);
         repo.issues = allIssues.filter(issue => !issue.pull_request);
+        repo.packageJson = JSON.parse(Buffer.from(packageJson.content, "base64").toString())
+        repo.latestRelease = latestRelease
+
+        if (repo.packageJson.cdktf && repo.packageJson.cdktf.provider) {
+            const registryUrl = repo.packageJson.cdktf.provider.name.replace(`registry.terraform.io`, "https://registry.terraform.io/v2/providers") + "?include=provider-versions"
+            repo.provider = {
+                latestVersion: await getLatestProviderVersion(repo.packageJson.cdktf.provider.name.replace("registry.terraform.io/", ""), registryUrl)
+            }
+        }
     }
 
-    await fs.writeFile("./src/_data/repos.json", JSON.stringify(repos, null, 2), "utf8")
+    await fs.writeFile("./src/_data/repos-provider.json", JSON.stringify(repos, null, 2), "utf8")
 
     console.log("Done")
 })()
