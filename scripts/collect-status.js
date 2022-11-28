@@ -109,9 +109,17 @@ async function delay(ms) {
 }
 
 (async function () {
+    let authToken
+    try {
+        const auth = createActionAuth();
+        authToken = await auth();
+    } catch (e) {
+        console.error("Unable to get github action token: ", e)
+    }
+
     const OctokitWithPlugins = Octokit.plugin(throttling)
     const github = new OctokitWithPlugins({
-        authStrategy: createActionAuth(),
+        auth: authToken && authToken.token,
         throttle: {
             onRateLimit: (retryAfter) => {
                 console.log(`Hitting rate limit, retrying after: ${retryAfter} seconds`)
