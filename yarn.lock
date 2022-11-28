@@ -104,6 +104,14 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@octokit/auth-action@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@octokit/auth-action/-/auth-action-2.0.2.tgz#464392b6340d8c0359c075ca6f278a8ca0804652"
+  integrity sha512-uxYIO3eX7moMRr01jaLmfWAuj53cWPzF154yrqDkqySSrUmT0slQYx3uvDs5YC5twl3eeJYZaD5UQhl/8r5mWA==
+  dependencies:
+    "@octokit/auth-token" "^3.0.0"
+    "@octokit/types" "^8.0.0"
+
 "@octokit/auth-token@^3.0.0":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@octokit/auth-token/-/auth-token-3.0.2.tgz#a0fc8de149fd15876e1ac78f6525c1c5ab48435f"

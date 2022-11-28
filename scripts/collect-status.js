@@ -3,7 +3,7 @@
 const { Octokit } = require("@octokit/rest")
 const { throttling } = require("@octokit/plugin-throttling")
 const fs = require("fs").promises
-const semver = require("semver")
+const { createActionAuth } = require("@octokit/auth-action")
 
 async function processWorkflows(data) {
     const runSet = {}
@@ -109,8 +109,17 @@ async function delay(ms) {
 }
 
 (async function () {
+    let authToken
+    try {
+        const auth = createActionAuth();
+        authToken = await auth();
+    } catch (e) {
+        console.error("Unable to get github action token: ", e)
+    }
+
     const OctokitWithPlugins = Octokit.plugin(throttling)
     const github = new OctokitWithPlugins({
+        auth: authToken,
         throttle: {
             onRateLimit: (retryAfter) => {
                 console.log(`Hitting rate limit, retrying after: ${retryAfter} seconds`)

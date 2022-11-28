@@ -30,6 +30,8 @@ jobs:
 
       - name: Grab data updates
         run: node ./scripts/collect-status.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit updated repos.json
         uses: EndBug/add-and-commit@v9

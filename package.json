@@ -26,6 +26,7 @@
     "tailwindcss": "^3.2.1"
   },
   "dependencies": {
+    "@octokit/auth-action": "^2.0.2",
     "@primer/octicons": "^17.9.0",
     "luxon": "^3.1.0",
     "semver": "^7.3.8"
