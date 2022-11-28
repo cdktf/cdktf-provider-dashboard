@@ -30,7 +30,12 @@ layout: base
                 <span>{% githubIcon 'tag' %}</span>
                 <a href={{repo.latestRelease.html_url}} target="_blank">{{ repo.latestRelease.tag_name }}</a>
             </a>
-            <span title="Provider Version">{{ repo.packageJson.cdktf.provider.version }} / {{repo.provider.latestVersion}}</span>
+            <span title="Provider Version" class="flex flex-row items-center space-x-1">
+                {% if repo.packageJson.cdktf.provider.version | isMajorDiff(repo.provider.latestVersion) %}
+                    <span class="fill-red-600">{% githubIcon 'alert-fill' %}</span>
+                {% endif %}
+                <span>{{ repo.packageJson.cdktf.provider.version }} / </span> <span>{{repo.provider.latestVersion}}</span>
+            </span>
             <span title"CDKTF Dependency Version">{{ repo.packageJson.peerDependencies.cdktf }}</span>
             <span>{{ repo.latestRelease.published_at | daysAgo }}</span>
         </h2>
