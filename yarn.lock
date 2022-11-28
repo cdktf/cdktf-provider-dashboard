@@ -112,7 +112,7 @@
     "@octokit/auth-token" "^3.0.0"
     "@octokit/types" "^8.0.0"
 
-"@octokit/auth-token@^3.0.0":
+"@octokit/auth-token@^3.0.0", "@octokit/auth-token@^3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@octokit/auth-token/-/auth-token-3.0.2.tgz#a0fc8de149fd15876e1ac78f6525c1c5ab48435f"
   integrity sha512-pq7CwIMV1kmzkFTimdwjAINCXKTajZErLB4wMLYapR2nuB/Jpr66+05wOTZMSCBXP6n4DdDWT2W19Bm17vU69Q==

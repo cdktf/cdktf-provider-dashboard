@@ -1,7 +1,7 @@
-function repoHasFailingWorkflow(repo) {
-    return Object.values(repo.workflows).some(
-        (workflowItems) => workflowItems[0].conclusion != "success"
-    );
+function repoCountFailingWorkflows(repo) {
+    return Object.values(repo.workflows).reduce(
+        (res, workflowItems) => res += workflowItems[0].conclusion === "success" ? 0 : 1
+        , 0);
 }
 
 function repoHasPullRequests(repo) {
@@ -12,12 +12,11 @@ function repoHasIssues(repo) {
     return repo.issues.length > 0
 }
 
-function withFunction(func) {
-    return (a, b) => {
-        if (func(a)) return -1;
-        else if (func(b)) return 1;
-        return 0;
-    }
+function sortByProblems(a, b) {
+    return repoCountFailingWorkflows(b) - repoCountFailingWorkflows(a) ||
+        b.pulls.length - a.pulls.length ||
+        b.issues.length - a.issues.length ||
+        b.latestRelease.published_at.localeCompare(a.latestRelease.published_at)
 }
 
 
@@ -27,14 +26,6 @@ module.exports = function (value) {
     if (!Array.isArray(value))
         throw new Error("Expected an array for sortRepos filter");
 
-    return value
-        .sort(withFunction(repoHasFailingWorkflow))
-        .sort(withFunction(repoHasPullRequests))
-        .sort(withFunction(repoHasIssues))
-        .sort((a, b) => {
-            return (a.latestRelease.published_at < b.latestRelease.published_at) ? 1 :
-                (a.latestRelease.published_at > b.latestRelease.published_at) ? -1 : 0;
-        })
-
+    return value.sort(sortByProblems)
 };
 

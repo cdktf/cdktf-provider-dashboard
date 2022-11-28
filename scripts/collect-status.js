@@ -4,6 +4,7 @@ const { Octokit } = require("@octokit/rest")
 const { throttling } = require("@octokit/plugin-throttling")
 const fs = require("fs").promises
 const { createActionAuth } = require("@octokit/auth-action")
+const { createTokenAuth } = require("@octokit/auth-token")
 
 async function processWorkflows(data) {
     const runSet = {}
@@ -115,6 +116,8 @@ async function delay(ms) {
         authToken = await auth();
     } catch (e) {
         console.error("Unable to get github action token: ", e)
+        const auth = createTokenAuth(process.env.GITHUB_TOKEN)
+        authToken = await auth();
     }
 
     const OctokitWithPlugins = Octokit.plugin(throttling)
