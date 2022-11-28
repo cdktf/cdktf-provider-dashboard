@@ -609,6 +609,10 @@ video {
   fill: #a855f7;
 }
 
+.fill-red-600 {
+  fill: #dc2626;
+}
+
 .p-2 {
   padding: 0.5rem;
 }
