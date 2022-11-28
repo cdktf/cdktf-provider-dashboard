@@ -104,6 +104,10 @@ async function getAllPrebuiltRepos(github) {
     )
 }
 
+async function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 (async function () {
     const OctokitWithPlugins = Octokit.plugin(throttling)
     const github = new OctokitWithPlugins({
@@ -140,6 +144,8 @@ async function getAllPrebuiltRepos(github) {
                 latestVersion: await getLatestProviderVersion(repo.packageJson.cdktf.provider.name.replace("registry.terraform.io/", ""), registryUrl)
             }
         }
+
+        await delay(5000)
     }
 
     await fs.writeFile("./src/_data/repos.json", JSON.stringify(repos, null, 2), "utf8")
