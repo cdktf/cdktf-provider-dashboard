@@ -154,7 +154,10 @@ async function delay(ms) {
             }
         }
 
-        await delay(5000)
+        if (!authToken || !authToken.token) {
+            console.log("😮‍💨 for 5 secs")
+            await delay(5000)
+        }
     }
 
     await fs.writeFile("./src/_data/repos.json", JSON.stringify(repos, null, 2), "utf8")
