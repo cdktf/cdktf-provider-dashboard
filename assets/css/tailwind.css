@@ -526,6 +526,10 @@ video {
   margin-top: 0.75rem;
 }
 
+.ml-4 {
+  margin-left: 1rem;
+}
+
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -542,12 +546,16 @@ video {
   display: flex;
 }
 
+.grid {
+  display: grid;
+}
+
 .w-screen {
   width: 100vw;
 }
 
-.w-1\/5 {
-  width: 20%;
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
 .flex-row {
@@ -666,4 +674,28 @@ video {
   vertical-align: text-top;
   fill: currentColor;
   overflow: visible;
+}
+
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1536px) {
+  .\32xl\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
 }
