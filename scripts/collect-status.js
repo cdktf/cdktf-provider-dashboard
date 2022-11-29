@@ -72,6 +72,31 @@ async function getPackageJson(github, repoName) {
     return data
 }
 
+function convertRepoNameForLanguage(repoName, language) {
+    const providerName = repoName.replace("cdktf-provider-", "")
+    switch (language) {
+        case "python":
+            return `cdktf-cdktf-provider-${providerName}`
+    }
+}
+
+async function getPypiPackageVersion(repoName) {
+    const packageName = convertRepoNameForLanguage(repoName, "python")
+
+    const url = `https://pypi.org/pypi/${packageName}/json`
+    const response = await fetch(url)
+    if (!response.ok) {
+        return null
+    }
+    const data = await response.json()
+
+    return {
+        version: data.info.version,
+        packageUrl: data.info.package_url,
+        releaseDate: data.releases[data.info.version][0].upload_time
+    }
+}
+
 async function getLatestCdktfVersion() {
     const response = await fetch(`https://registry.npmjs.org/cdktf`)
     const data = await response.json();
@@ -115,9 +140,16 @@ async function delay(ms) {
         const auth = createActionAuth();
         authToken = await auth();
     } catch (e) {
-        console.error("Unable to get github action token: ", e)
-        const auth = createTokenAuth(process.env.GITHUB_TOKEN)
-        authToken = await auth();
+        console.error("Unable to get github action token, trying locally passed token")
+    }
+    if (!authToken) {
+        try {
+            const auth = createTokenAuth(process.env.GITHUB_TOKEN)
+            authToken = await auth();
+        } catch (e) {
+            console.log("Unable to get locally passed token, proceeding unauthenticated")
+        }
+
     }
 
     const OctokitWithPlugins = Octokit.plugin(throttling)
@@ -156,6 +188,10 @@ async function delay(ms) {
                 latestVersion: await getLatestProviderVersion(repo.packageJson.cdktf.provider.name.replace("registry.terraform.io/", ""), registryUrl)
             }
         }
+        repo.packageManagerVersions = {
+            pypi: await getPypiPackageVersion(repo.name),
+        }
+
 
         if (!authToken || !authToken.token) {
             console.log("😮‍💨 for 5 secs")
