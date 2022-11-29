@@ -77,6 +77,8 @@ function convertRepoNameForLanguage(repoName, language) {
     switch (language) {
         case "python":
             return `cdktf-cdktf-provider-${providerName}`
+        case "java":
+            return repoName
     }
 }
 
@@ -95,6 +97,25 @@ async function getPypiPackageVersion(repoName) {
         packageUrl: data.info.package_url,
         releaseDate: data.releases[data.info.version][0].upload_time
     }
+}
+
+async function getMavenPackageVersion(repoName) {
+    const packageName = convertRepoNameForLanguage(repoName, "java")
+    const url = `https://search.maven.org/solrsearch/select?q=a:${packageName}&rows=20&wt=json`
+    const response = await fetch(url)
+    if (!response.ok) {
+        return null
+    }
+    const data = await response.json()
+
+    const doc = data.response.docs[0]
+    if (!doc) return null
+    return {
+        version: doc.latestVersion,
+        packageUrl: `https://mvnrepository.com/artifact/com.hashicorp/${packageName}/${doc.latestVersion}`,
+        releaseDate: new Date(doc.timestamp).toISOString()
+    }
+
 }
 
 async function getLatestCdktfVersion() {
@@ -190,6 +211,7 @@ async function delay(ms) {
         }
         repo.packageManagerVersions = {
             pypi: await getPypiPackageVersion(repo.name),
+            maven: await getMavenPackageVersion(repo.name)
         }
 
 
