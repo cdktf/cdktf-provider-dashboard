@@ -79,6 +79,8 @@ function convertRepoNameForLanguage(repoName, language) {
             return `cdktf-cdktf-provider-${providerName}`
         case "java":
             return repoName
+        case "csharp":
+            return `HashiCorp.Cdktf.Providers.${providerName}` // The API is agnostic to character casing
     }
 }
 
@@ -115,8 +117,25 @@ async function getMavenPackageVersion(repoName) {
         packageUrl: `https://mvnrepository.com/artifact/com.hashicorp/${packageName}/${doc.latestVersion}`,
         releaseDate: new Date(doc.timestamp).toISOString()
     }
-
 }
+
+async function getNuGetPackageVersion(repoName) {
+    const packageName = convertRepoNameForLanguage(repoName, "csharp")
+    const url = `https://azuresearch-usnc.nuget.org/query?q=${packageName}&prerelease=false`
+    const response = await fetch(url)
+    if (!response.ok) {
+        return null
+    }
+    const data = await response.json()
+
+    const info = data.data[0]
+    if (!info) return null
+    return {
+        version: info.version,
+        packageUrl: `https://www.nuget.org/packages/${packageName}`,
+    }
+}
+
 
 async function getLatestCdktfVersion() {
     const response = await fetch(`https://registry.npmjs.org/cdktf`)
@@ -211,7 +230,8 @@ async function delay(ms) {
         }
         repo.packageManagerVersions = {
             pypi: await getPypiPackageVersion(repo.name),
-            maven: await getMavenPackageVersion(repo.name)
+            maven: await getMavenPackageVersion(repo.name),
+            nuget: await getNuGetPackageVersion(repo.name)
         }
 
 
