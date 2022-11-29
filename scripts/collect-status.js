@@ -234,7 +234,6 @@ async function delay(ms) {
             nuget: await getNuGetPackageVersion(repo.name)
         }
 
-
         if (!authToken || !authToken.token) {
             console.log("😮‍💨 for 5 secs")
             await delay(5000)
