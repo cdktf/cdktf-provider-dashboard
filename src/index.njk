@@ -1,7 +1,7 @@
 ---
 layout: base
 ---
-<main class="m-6 w-screen">
+<main class="w-screen">
 <h1 class="text-4xl font-bold mt-3 flex flex-row space-x-2 items-center ml-4">
     <span>CDKTF Pre-built provider health dashboard</span>
     <a href="https://github.com/mutahhir/check-prebuilt-provider-status" target="_blank">
@@ -11,21 +11,24 @@ layout: base
 <p class="text-xs uppercase ml-4">Last Updated: {{page.date.toUTCString()}}</p>
 <p class="text-xs uppercase ml-4">Latest CDKTF: {{repos[0].latestCdktfVersion}}</p>
 <p class="text-xs uppercase ml-4 mb-6">Total Providers: {{repos.length - 1}}</p> <!-- -1 because of cdktf-provider-project not being an actual provider -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
+<div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 min-w-max">
 {% for repo in repos | sortRepos %}
-    <div class="bg-gray-100 rounded p-2 drop-shadow-md m-4 min-w-600">
+    <!-- Card -->
+    <div class="bg-gray-100 rounded p-2 drop-shadow-md m-4 max-w-sm">
+        <!-- Provider Header -->
         <h2 class="text-xl capitalize font-bold flex flex-row items-center space-x-2 ml-2 text-gray-600">
             <a href={{repo.html_url}} target="_blank">{{ repo.name.replace("cdktf-provider-", "") }}</a>
             <a class="flex flex-row items-center space-x-1" href="{{repo.html_url}}/issues">
-                <span class="fill-green-500">{% githubIcon 'issue-opened' %}</span>
+                <span class="fill-gray-500">{% githubIcon 'issue-opened' %}</span>
                 <span class="text-xs {{ "text-green-500" if repo.issues.length === 0 else "text-red-500 " }}">{{ repo.issues.length }}</span>
             </a>
             <a class="flex flex-row items-center space-x-1" href="{{repo.html_url}}/pulls">
-                <span class="fill-purple-500">{% githubIcon 'git-pull-request' %}</span>
-                <span class="text-xs {{ "text-green-500" if repo.pulls.length === 0 else "text-red-500 " }}">{{ repo.pulls.length }}</span>
+                <span class="fill-gray-500">{% githubIcon 'git-pull-request' %}</span>
+                <span class="text-xs {{ "text-gray-500" if repo.pulls.length === 0 else "text-red-500 " }}">{{ repo.pulls.length }}</span>
             </a>
         </h2>
-        <h3 class="text-sm capitalize flex flex-row items-center space-x-2 ml-2 text-gray-600">
+        <!-- Github and Provider Release -->
+        <h3 class="text-sm capitalize flex flex-row items-center space-x-2 ml-2 text-gray-600 max-w-sm">
             <a class="flex flex-row items-center space-x-1" href="{{repo.html_url}}/issues">
                 <span>{% githubIcon 'tag' %}</span>
                 <a href={{repo.latestRelease.html_url}} target="_blank">{{ repo.latestRelease.tag_name }}</a>
@@ -39,7 +42,20 @@ layout: base
             <span title"CDKTF Dependency Version">{{ repo.packageJson.peerDependencies.cdktf }}</span>
             <span>{{ repo.latestRelease.published_at | daysAgo }}</span>
         </h2>
-        <ul class="flex flex-row flex-wrap">
+        <!-- Package Manager Releases -->
+        <h3 class="text-sm capitalize flex flex-row items-center space-x-2 ml-2 text-gray-600 max-w-sm">
+                <span>{% githubIcon 'globe' %}</span>
+            <a class="flex flex-row items-center space-x-1 {{ "text-red-600" if ("v" + repo.packageManagerVersions.maven.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.maven.packageUrl}}>
+                Maven: {{repo.packageManagerVersions.maven.version}}</a>
+            </a>
+            <a class="flex flex-row items-center space-x-1 {{ "text-red-600" if ("v" + repo.packageManagerVersions.pypi.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.pypi.packageUrl}}>
+                PyPI: {{repo.packageManagerVersions.pypi.version}}</a>
+            </a>
+            <a class="flex flex-row items-center space-x-1 {{ "text-red-600" if ("v" + repo.packageManagerVersions.nuget.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.nuget.packageUrl}}>
+                NuGet: {{repo.packageManagerVersions.nuget.version}}</a>
+            </a>
+        </h2>
+        <ul class="flex flex-row flex-wrap max-w-sm">
             {% for workflowName, workflowItems in repo.workflows %}
                 <li class="m-1">
                     <a href={{workflowItems[0].html_url}} target="_blank">
