@@ -1,8 +1,8 @@
 {
-  "name": "check-prebuilt-provider-status",
+  "name": "cdktf-provider-dashboard",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:mutahhir/check-prebuilt-provider-status.git",
+  "repository": "git@github.com:cdktf/cdktf-provider-dashboard.git",
   "author": "Mutahhir Hayat <mutahhir.hayat@hashicorp.com>",
   "license": "MIT",
   "scripts": {

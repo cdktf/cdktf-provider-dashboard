@@ -17,6 +17,6 @@ module.exports = function (eleventyConfig) {
       includes: "_includes",
       layouts: "_layouts",
     },
-    pathPrefix: "/check-prebuilt-provider-status/",
+    pathPrefix: "/cdktf-provider-dashboard/",
   };
 };
