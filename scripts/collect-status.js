@@ -156,6 +156,10 @@ async function getLatestProviderVersion(name, url) {
 }
 
 
+const ignoredRepos = [
+    "cdktf-provider-project",
+    "cdktf-provider-dashboard",
+]
 async function getAllPrebuiltRepos(github) {
     console.log("Getting all repo names")
     return github.paginate(
@@ -166,7 +170,7 @@ async function getAllPrebuiltRepos(github) {
             type: "public",
             filter: ""
         },
-        (response) => response.data.filter(repo => repo.name.startsWith("cdktf-provider-") && !repo.name.endsWith("-go"))
+        (response) => response.data.filter(repo => repo.name.startsWith("cdktf-provider-") && !repo.name.endsWith("-go") && !ignoredRepos.includes(repo.name))
     )
 }
 
