@@ -75,12 +75,30 @@ async function getPackageJson(github, repoName) {
 function convertRepoNameForLanguage(repoName, language) {
     const providerName = repoName.replace("cdktf-provider-", "")
     switch (language) {
+        case "typescript":
+            return `@cdktf/provider-${providerName}`
         case "python":
             return `cdktf-cdktf-provider-${providerName}`
         case "java":
             return repoName
         case "csharp":
             return `HashiCorp.Cdktf.Providers.${providerName}` // The API is agnostic to character casing
+    }
+}
+
+async function getNpmPackageVersion(repoName) {
+    const packageName = convertRepoNameForLanguage(repoName, "typescript")
+
+    const url = `https://registry.npmjs.org/${packageName}/latest`
+    const response = await fetch(url)
+    if (!response.ok) {
+        return null
+    }
+    const data = await response.json()
+
+    return {
+        version: data.version,
+        packageUrl: `https://www.npmjs.com/package/${packageName}`,
     }
 }
 
@@ -233,6 +251,7 @@ async function delay(ms) {
             }
         }
         repo.packageManagerVersions = {
+            npm: await getNpmPackageVersion(repo.name),
             pypi: await getPypiPackageVersion(repo.name),
             maven: await getMavenPackageVersion(repo.name),
             nuget: await getNuGetPackageVersion(repo.name)
