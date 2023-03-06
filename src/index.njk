@@ -11,7 +11,7 @@ layout: base
 <p class="text-xs uppercase ml-4">Last Updated: {{page.date.toUTCString()}}</p>
 <p class="text-xs uppercase ml-4">Latest CDKTF: {{repos[0].latestCdktfVersion}}</p>
 <p class="text-xs uppercase ml-4 mb-6">Total Providers: {{repos.length - 1}}</p> <!-- -1 because of cdktf-provider-project not being an actual provider -->
-<div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 min-w-max">
+<div class="flex flex-row flex-wrap">
 {% for repo in repos | sortRepos %}
     <!-- Card -->
     <div class="bg-gray-100 rounded p-2 drop-shadow-md m-4 max-w-sm">
@@ -45,6 +45,9 @@ layout: base
         <!-- Package Manager Releases -->
         <h3 class="text-sm capitalize flex flex-row items-center space-x-2 ml-2 text-gray-600 max-w-sm">
                 <span>{% githubIcon 'globe' %}</span>
+            <a class="flex flex-row items-center space-x-1 {{ "text-red-600" if ("v" + repo.packageManagerVersions.npm.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.npm.packageUrl}}>
+                Npm: {{repo.packageManagerVersions.npm.version}}</a>
+            </a>
             <a class="flex flex-row items-center space-x-1 {{ "text-red-600" if ("v" + repo.packageManagerVersions.maven.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.maven.packageUrl}}>
                 Maven: {{repo.packageManagerVersions.maven.version}}</a>
             </a>
@@ -55,11 +58,11 @@ layout: base
                 NuGet: {{repo.packageManagerVersions.nuget.version}}</a>
             </a>
         </h2>
-        <ul class="flex flex-row flex-wrap max-w-sm">
-            {% for workflowName, workflowItems in repo.workflows %}
+        <ul class="flex flex-row flex-wrap max-w-sm mt-4">
+            {% for workflow in repo.workflows | sortWorkflows %}
                 <li class="m-1">
-                    <a href={{workflowItems[0].html_url}} target="_blank">
-                        <div class="text-sm p-1 rounded {{ "bg-green-300" if workflowItems[0].conclusion === "success" else "bg-red-400 " }}">{{workflowName}} <span class="text-xs block text-gray-600">{{workflowItems[0].created_at | daysAgo }}</span></div>
+                    <a href={{workflow[1][0].html_url}} target="_blank">
+                        <div class="text-sm p-1 rounded {{ "bg-green-300" if workflow[1][0].conclusion === "success" else "bg-red-400 " }}">{{workflow[0]}} <span class="text-xs block text-gray-600">{{workflow[1][0].created_at | daysAgo }}</span></div>
                     </a>
                 </li>
             {% endfor %}

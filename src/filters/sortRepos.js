@@ -11,10 +11,20 @@ function isMajorOutofDate(repo) {
     return semver.diff(repo.packageJson.cdktf.provider.version, repo.provider.latestVersion) === "major" ? 1 : 0
 }
 
+function isPackageManagerOutOfDate(managerKey, repo) {
+    if (!repo.provider) return 0;
+    if (!repo.packageManagerVersions[managerKey]) return 0;
+    return semver.lt(repo.packageManagerVersions[managerKey].version, repo.latestRelease.tag_name.slice(1)) ? 1 : 0
+}
+
 function sortByProblems(a, b) {
     return repoCountFailingWorkflows(b) - repoCountFailingWorkflows(a) ||
         isMajorOutofDate(b) - isMajorOutofDate(a) ||
         a.latestRelease.published_at.localeCompare(b.latestRelease.published_at) ||
+        isPackageManagerOutOfDate("npm", b) - isPackageManagerOutOfDate("npm", a) ||
+        isPackageManagerOutOfDate("maven", b) - isPackageManagerOutOfDate("maven", a) ||
+        isPackageManagerOutOfDate("pypi", b) - isPackageManagerOutOfDate("pypi", a) ||
+        isPackageManagerOutOfDate("nuget", b) - isPackageManagerOutOfDate("nuget", a) ||
         b.issues.length - a.issues.length ||
         b.pulls.length - a.pulls.length
 }

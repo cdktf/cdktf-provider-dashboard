@@ -4,6 +4,7 @@ module.exports = function (eleventyConfig) {
 
   // Filters
   eleventyConfig.addFilter("sortRepos", require('./src/filters/sortRepos'))
+  eleventyConfig.addFilter("sortWorkflows", require('./src/filters/sortWorkflows'))
   eleventyConfig.addFilter("daysAgo", require('./src/filters/daysAgo'))
   eleventyConfig.addFilter("isMajorDiff", require('./src/filters/semverCompare'))
 
