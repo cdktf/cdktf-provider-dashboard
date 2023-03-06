@@ -18,15 +18,17 @@ function isPackageManagerOutOfDate(managerKey, repo) {
 }
 
 function sortByProblems(a, b) {
+
     return repoCountFailingWorkflows(b) - repoCountFailingWorkflows(a) ||
         isMajorOutofDate(b) - isMajorOutofDate(a) ||
-        a.latestRelease.published_at.localeCompare(b.latestRelease.published_at) ||
         isPackageManagerOutOfDate("npm", b) - isPackageManagerOutOfDate("npm", a) ||
         isPackageManagerOutOfDate("maven", b) - isPackageManagerOutOfDate("maven", a) ||
         isPackageManagerOutOfDate("pypi", b) - isPackageManagerOutOfDate("pypi", a) ||
         isPackageManagerOutOfDate("nuget", b) - isPackageManagerOutOfDate("nuget", a) ||
+        a.latestRelease.published_at.localeCompare(b.latestRelease.published_at) ||
         b.issues.length - a.issues.length ||
-        b.pulls.length - a.pulls.length
+        b.pulls.length - a.pulls.length;
+
 }
 
 

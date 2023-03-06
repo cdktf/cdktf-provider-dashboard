@@ -72,15 +72,28 @@ async function getPackageJson(github, repoName) {
     return data
 }
 
+const providerNameOverrides = {
+    "googlebeta": {
+        typescript: "google-beta",
+        python: "google_beta",
+        java: "google-beta",
+        csharp: "GoogleBeta"
+    }
+}
+
 function convertRepoNameForLanguage(repoName, language) {
-    const providerName = repoName.replace("cdktf-provider-", "")
+    let providerName = repoName.replace("cdktf-provider-", "")
+    const hasOverrides = !!providerNameOverrides[providerName]
+    providerName = hasOverrides ? providerNameOverrides[providerName][language] : providerName
+
     switch (language) {
         case "typescript":
+
             return `@cdktf/provider-${providerName}`
         case "python":
             return `cdktf-cdktf-provider-${providerName}`
         case "java":
-            return repoName
+            return hasOverrides ? `cdktf-provider-${providerName}` : repoName
         case "csharp":
             return `HashiCorp.Cdktf.Providers.${providerName}` // The API is agnostic to character casing
     }
