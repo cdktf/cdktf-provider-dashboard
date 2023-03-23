@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 const semver = require("semver")
 
 function repoCountFailingWorkflows(repo) {
