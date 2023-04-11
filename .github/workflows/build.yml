@@ -41,3 +41,21 @@ jobs:
         with:
           publish_dir: ./_site
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  report:
+    name: Report status
+    runs-on: ubuntu-latest
+    if: ${{ failure() }}
+    needs:
+      - build
+    steps:
+      - name: Send failures to Slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "name": "cdktf-provider-dashboard",
+              "run_url": "https://github.com/cdktf/cdktf-provider-dashboard/actions/runs/${{ github.run_id }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.FAILURE_SLACK_WEBHOOK_URL }}
