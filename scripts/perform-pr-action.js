@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-#! /usr/bin/env node
 const { Octokit } = require("@octokit/rest")
 const { throttling } = require("@octokit/plugin-throttling")
 const { createTokenAuth } = require("@octokit/auth-token")
