@@ -61,6 +61,9 @@ layout: base
             <a class="flex flex-row items-center space-x-1 {{ "text-red-600" if ("v" + repo.packageManagerVersions.nuget.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.nuget.packageUrl}}>
                 NuGet: {{repo.packageManagerVersions.nuget.version}}</a>
             </a>
+            <a class="flex flex-row items-center space-x-1 {{ "text-red-600" if ("v" + repo.packageManagerVersions.go.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.go.packageUrl}}>
+                Go: {{repo.packageManagerVersions.go.version}}</a>
+            </a>
         </h2>
         <ul class="flex flex-row flex-wrap max-w-sm mt-4">
             {% for workflow in repo.workflows | sortWorkflows %}
