@@ -77,13 +77,18 @@ async function getRelease(github, repoName) {
 
 async function getPackageJson(github, repoName) {
   console.log("Package.json for: ", repoName);
-  const { data } = await github.rest.repos.getContent({
-    owner: "cdktf",
-    repo: repoName,
-    path: "package.json",
-  });
+  try {
+    const { data } = await github.rest.repos.getContent({
+      owner: "cdktf",
+      repo: repoName,
+      path: "package.json",
+    });
 
-  return data;
+    return data;
+  } catch (e) {
+    console.log("No package.json found for: ", repoName);
+    return undefined
+  }
 }
 
 const providerNameOverrides = {
@@ -300,9 +305,19 @@ async function delay(ms) {
     repo.workflows = workflows;
     repo.pulls = allIssues.filter((issue) => !!issue.pull_request);
     repo.issues = allIssues.filter((issue) => !issue.pull_request);
-    repo.packageJson = JSON.parse(
+    repo.packageJson = packageJson ? JSON.parse(
       Buffer.from(packageJson.content, "base64").toString()
-    );
+    ) : {
+      cdktf: {
+        provider: {
+          name: "unknown",
+          version: "0.0.0"
+        },
+        peerDependencies: {
+          cdktf: "unknown"
+        }
+      }
+    };
     repo.latestRelease = latestRelease;
     repo.latestCdktfVersion = latestCdktfVersion;
 
