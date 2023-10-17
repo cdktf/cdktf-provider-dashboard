@@ -215,18 +215,23 @@ async function getLatestCdktfVersion() {
 
 async function getLatestProviderVersion(name, url) {
   console.log("Fetching provider info: ", name);
-  const response = await fetch(url);
-  const data = await response.json();
-  const providerVersion = data.included
-    .map((data) => ({
-      version: data.attributes.version,
-      published: data.attributes["published-at"],
-    }))
-    .sort((a, b) =>
-      a.published < b.published ? 1 : a.published > b.published ? -1 : 0
-    )[0].version;
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    const providerVersion = data.included
+      .map((data) => ({
+        version: data.attributes.version,
+        published: data.attributes["published-at"],
+      }))
+      .sort((a, b) =>
+        a.published < b.published ? 1 : a.published > b.published ? -1 : 0
+      )[0].version;
 
-  return providerVersion;
+    return providerVersion;
+  } catch (e) {
+    console.log("Unable to fetch provider info: ", name);
+    return "unknown"
+  }
 }
 
 const ignoredRepos = ["cdktf-provider-project", "cdktf-provider-dashboard"];
