@@ -55,13 +55,24 @@ async function getIssues(github, repoName) {
 
 async function getRelease(github, repoName) {
   console.log("Release for: ", repoName);
-  const { data } = await github.rest.repos.getLatestRelease({
-    owner: "cdktf",
-    repo: repoName,
-    state: "open",
-  });
-
-  return data;
+  try {
+    const { data } = await github.rest.repos.getLatestRelease({
+      owner: "cdktf",
+      repo: repoName,
+      state: "open",
+    });
+  
+    return data;
+  } catch (e) {
+    console.log("No release found for: ", repoName);
+    // Returning a non-release object to indicate no release
+    return {
+      html_url: "http://cdk.tf",
+      tag_name: "unreleased",
+      published_at: "1815-12-27T00:00:00Z", // Adas Birthday, to signal unreleased
+    };
+  }
+ 
 }
 
 async function getPackageJson(github, repoName) {
