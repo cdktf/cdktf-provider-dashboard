@@ -202,7 +202,7 @@ async function getGoReleaseVersion(repoName) {
 
   if (!firstTag) {
     return {
-      version: "unknown",
+      version: "999.999.999",
       packageUrl: `https://pkg.go.dev/search?q=${packageName}`,
     }
   }
@@ -323,10 +323,10 @@ async function delay(ms) {
       cdktf: {
         provider: {
           name: "unknown",
-          version: "0.0.0"
+          version: "999.999.999"
         },
         peerDependencies: {
-          cdktf: "unknown"
+          cdktf: "999.999.999"
         }
       }
     };
