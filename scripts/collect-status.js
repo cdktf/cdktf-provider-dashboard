@@ -200,6 +200,13 @@ async function getGoReleaseVersion(repoName) {
   const data = await response.json();
   const firstTag = data[0];
 
+  if (!firstTag) {
+    return {
+      version: "unknown",
+      packageUrl: `https://pkg.go.dev/search?q=${packageName}`,
+    }
+  }
+
   return {
     version: firstTag.name.split("/")[1].replace("v", ""),
     packageUrl: `https://pkg.go.dev/search?q=${packageName}`,
