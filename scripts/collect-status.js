@@ -237,7 +237,7 @@ async function getLatestProviderVersion(name, url) {
     return providerVersion;
   } catch (e) {
     console.log("Unable to fetch provider info: ", name);
-    return "unknown"
+    return "999.999.999"
   }
 }
 
