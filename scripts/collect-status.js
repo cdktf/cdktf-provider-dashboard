@@ -68,7 +68,7 @@ async function getRelease(github, repoName) {
     // Returning a non-release object to indicate no release
     return {
       html_url: "http://cdk.tf",
-      tag_name: "unreleased",
+      tag_name: "999.999.999",
       published_at: "1815-12-27T00:00:00Z", // Adas Birthday, to signal unreleased
     };
   }
