@@ -5,6 +5,7 @@
 
 const { Octokit } = require("@octokit/rest");
 const { throttling } = require("@octokit/plugin-throttling");
+const { retry } = require("@octokit/plugin-retry");
 const fs = require("fs").promises;
 const { createActionAuth } = require("@octokit/auth-action");
 const { createTokenAuth } = require("@octokit/auth-token");
@@ -287,7 +288,7 @@ async function delay(ms) {
     }
   }
 
-  const OctokitWithPlugins = Octokit.plugin(throttling);
+  const OctokitWithPlugins = Octokit.plugins([throttling, retry]);
   const github = new OctokitWithPlugins({
     auth: authToken && authToken.token,
     throttle: {
@@ -304,6 +305,7 @@ async function delay(ms) {
         return true;
       },
     },
+    request: { retries: 2 },
   });
 
   const repos = await getAllPrebuiltRepos(github);
