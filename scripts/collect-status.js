@@ -288,7 +288,7 @@ async function delay(ms) {
     }
   }
 
-  const OctokitWithPlugins = Octokit.plugins([throttling, retry]);
+  const OctokitWithPlugins = Octokit.plugin(throttling).plugin(retry);
   const github = new OctokitWithPlugins({
     auth: authToken && authToken.token,
     throttle: {
