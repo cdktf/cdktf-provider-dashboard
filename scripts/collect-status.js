@@ -135,6 +135,7 @@ async function getNpmPackageVersion(repoName) {
   return {
     version: data.version,
     packageUrl: `https://www.npmjs.com/package/${packageName}`,
+    isDeprecated: !!data.deprecated,
   };
 }
 
@@ -259,7 +260,15 @@ async function getAllPrebuiltRepos(github) {
           repo.name.startsWith("cdktf-provider-") &&
           !repo.name.endsWith("-go") &&
           !ignoredRepos.includes(repo.name)
-      )
+      ).sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      })
   );
 }
 

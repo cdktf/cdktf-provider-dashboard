@@ -22,6 +22,11 @@ layout: base
         <!-- Provider Header -->
         <h2 class="text-xl capitalize font-bold flex flex-row items-center space-x-2 ml-2 text-gray-600">
             <a href={{repo.html_url}} target="_blank">{{ repo.name.replace("cdktf-provider-", "") }}</a>
+            {% if repo.archived %}
+            <a class="flex flex-row items-center space-x-1" href="{{repo.html_url}}/issues">
+                <span class="fill-gray-500">{% githubIcon 'archive' %}</span>
+            </a>
+            {% else %}
             <a class="flex flex-row items-center space-x-1" href="{{repo.html_url}}/issues">
                 <span class="fill-gray-500">{% githubIcon 'issue-opened' %}</span>
                 <span class="text-xs {{ "text-green-500" if repo.issues.length === 0 else "text-red-500 " }}">{{ repo.issues.length }}</span>
@@ -30,6 +35,7 @@ layout: base
                 <span class="fill-gray-500">{% githubIcon 'git-pull-request' %}</span>
                 <span class="text-xs {{ "text-gray-500" if repo.pulls.length === 0 else "text-red-500 " }}">{{ repo.pulls.length }}</span>
             </a>
+            {% endif %}
         </h2>
         <!-- Github and Provider Release -->
         <h3 class="text-sm capitalize flex flex-row items-center space-x-2 ml-2 text-gray-600 max-w-sm">
@@ -48,7 +54,7 @@ layout: base
         </h2>
         <!-- Package Manager Releases -->
         <h3 class="text-sm capitalize flex flex-row items-center space-x-2 ml-2 text-gray-600 max-w-sm">
-                <span>{% githubIcon 'globe' %}</span>
+            <span>{% if repo.packageManagerVersions.npm.isDeprecated %}{% githubIcon 'moon' %}{% else %}{% githubIcon 'globe' %}{% endif %}</span>
             <a class="flex flex-row items-center space-x-1 {{ "text-red-600" if ("v" + repo.packageManagerVersions.npm.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.npm.packageUrl}}>
                 Npm: {{repo.packageManagerVersions.npm.version}}</a>
             </a>
@@ -65,6 +71,7 @@ layout: base
                 Go: {{repo.packageManagerVersions.go.version}}</a>
             </a>
         </h2>
+        {% if repo.archived !== true %}
         <ul class="flex flex-row flex-wrap max-w-sm mt-4">
             {% for workflow in repo.workflows | sortWorkflows %}
                 <li class="m-1">
@@ -74,6 +81,7 @@ layout: base
                 </li>
             {% endfor %}
         </ul>
+        {% endif %}
     </div>
 {% endfor %}
 </div>
