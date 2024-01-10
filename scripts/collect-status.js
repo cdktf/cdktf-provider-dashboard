@@ -205,13 +205,13 @@ async function getGoReleaseVersion(repoName) {
   if (!firstTag) {
     return {
       version: "999.999.999",
-      packageUrl: `https://pkg.go.dev/search?q=${packageName}`,
+      packageUrl: `https://pkg.go.dev/${packageName}`,
     }
   }
 
   return {
     version: firstTag.name.split("/")[1].replace("v", ""),
-    packageUrl: `https://pkg.go.dev/search?q=${packageName}`,
+    packageUrl: `https://pkg.go.dev/${packageName}`,
   };
 }
 

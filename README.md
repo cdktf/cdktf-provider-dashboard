@@ -15,6 +15,8 @@ yarn install
 yarn serve
 ```
 
+Then point your browser to http://localhost:8080/cdktf-provider-dashboard/
+
 ## Local Data
 
 The local build uses the `repos.json` file within the `_data` folder that has a snapshot of the last run. If you make changes to `scripts/collect-status.js` or want to test latest data, you can run the following command:
