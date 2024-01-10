@@ -98,6 +98,7 @@ const providerNameOverrides = {
     python: "google_beta",
     java: "google-beta",
     csharp: "GoogleBeta",
+    go: "googlebeta",
   },
 };
 
@@ -209,9 +210,10 @@ async function getGoReleaseVersion(repoName) {
     }
   }
 
+  const version = firstTag.name.split("/")[1].replace("v", "");
   return {
-    version: firstTag.name.split("/")[1].replace("v", ""),
-    packageUrl: `https://pkg.go.dev/${packageName}`,
+    version,
+    packageUrl: `https://pkg.go.dev/${packageName}/v${version.split(".")[0]}`,
   };
 }
 
