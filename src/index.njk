@@ -14,7 +14,9 @@ layout: base
 </h1>
 <p class="text-xs uppercase ml-4">Last Updated: {{page.date.toUTCString()}}</p>
 <p class="text-xs uppercase ml-4">Latest CDKTF: {{repos[0].latestCdktfVersion}}</p>
-<p class="text-xs uppercase ml-4 mb-6">Total Providers: {{repos.length - 1}}</p> <!-- -1 because of cdktf-provider-project not being an actual provider -->
+<p class="text-xs uppercase ml-4 mb-6">
+    Total Providers: {{repos.length}}, of which {{repos[0].numArchived}} {% if repos[0].numArchived === 1 %}is{% else %}are{% endif %} deprecated & archived
+</p>
 <div class="flex flex-row flex-wrap">
 {% for repo in repos | sortRepos %}
     <!-- Card -->

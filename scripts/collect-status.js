@@ -321,6 +321,7 @@ async function delay(ms) {
 
   const repos = await getAllPrebuiltRepos(github);
   const latestCdktfVersion = await getLatestCdktfVersion();
+  const numArchived = repos.reduce((count, repo) => count + (repo.archived ? 1 : 0), 0);
 
   for (const repo of repos) {
     const workflows = await getWorkflows(github, repo.name);
@@ -345,6 +346,7 @@ async function delay(ms) {
     };
     repo.latestRelease = latestRelease;
     repo.latestCdktfVersion = latestCdktfVersion;
+    repo.numArchived = numArchived;
 
     if (repo.packageJson.cdktf && repo.packageJson.cdktf.provider) {
       const registryUrl =
