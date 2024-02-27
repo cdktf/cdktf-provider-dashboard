@@ -11,6 +11,10 @@ updates:
       - "auto-approve"
     # Allow up to 5 open pull requests for dependencies
     open-pull-requests-limit: 5
+    ignore:
+      # New major versions of Octokit have been switching to ESM which causes problems, so disable these updates for now
+      - dependency-name: "@octokit/*"
+        update-types: ["version-update:semver-major"]
     groups:
       eleventy:
         patterns:
