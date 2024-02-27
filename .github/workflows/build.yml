@@ -1,53 +1,88 @@
 name: Build Eleventy
-
 on:
   schedule:
     - cron: "0 * * * *"
   push:
     branches:
       - main
-  workflow_dispatch:
-
+    paths-ignore:
+      - "META.d/**"
+      - "**/*.md"
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - ready_for_review
+      - synchronize
+    paths-ignore:
+      - "META.d/**"
+      - "**/*.md"
+  workflow_dispatch: {} # allow manual triggering just in case
+concurrency: ${{ github.workflow }}-${{ github.head_ref }}
+env:
+  GIT_REF: ${{ github.head_ref || github.ref }}
+  GIT_REPO: ${{ github.repository }}
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x]
-
+    permissions:
+      contents: read
+      issues: read
+      pull-requests: read
+      actions: read
+      checks: read
+      statuses: read
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
-          node-version: ${{ matrix.node-version }}
-
+          ref: ${{ env.GIT_REF }}
+          repository: ${{ env.GIT_REPO }}
+      - name: Setup Node.js
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        with:
+          node-version: 18
       - name: Install dependencies
         run: |
           yarn install --frozen-lockfile
-
       - name: Grab data updates
         run: node ./scripts/collect-status.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build Site
         run: yarn build
-
+      - uses: actions/upload-artifact@v4
+        id: artifact-upload-step
+        with:
+          name: build-artifact
+          path: _site
+          retention-days: 14
+  publish:
+    name: Publish to GH Pages
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request && github.ref == 'refs/heads/main' }}
+    needs:
+      - build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-artifact
+          path: _site
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           publish_dir: ./_site
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
   report:
     name: Report status
     runs-on: ubuntu-latest
-    if: ${{ failure() }}
+    if: ${{ !github.event.pull_request && failure() }}
     needs:
       - build
+    permissions:
+      contents: read
     steps:
       - name: Send failures to Slack
         uses: slackapi/slack-github-action@v1.23.0
