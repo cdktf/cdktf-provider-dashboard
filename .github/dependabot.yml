@@ -1,0 +1,39 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # Specify labels for pull requests
+    labels:
+      - "dependencies"
+      - "automerge"
+      - "auto-approve"
+    # Allow up to 5 open pull requests for dependencies
+    open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "@types/node"
+    groups:
+      eleventy:
+        patterns:
+          - "@11ty/*"
+      octokit:
+        patterns:
+          - "@octokit/*"
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "postcss"
+          - "postcss-*"
+          - "autoprefixer"
+  - package-ecosystem: "github-actions"
+    directory: /
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependencies"
+      - "automerge"
+      - "auto-approve"
+    # only update hashicorp actions, external actions managed by tsccr
+    allow:
+      - dependency-name: "hashicorp/*"
