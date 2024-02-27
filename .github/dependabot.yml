@@ -11,8 +11,6 @@ updates:
       - "auto-approve"
     # Allow up to 5 open pull requests for dependencies
     open-pull-requests-limit: 5
-    ignore:
-      - dependency-name: "@types/node"
     groups:
       eleventy:
         patterns:
