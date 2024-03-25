@@ -30,7 +30,7 @@
     "@octokit/auth-action": "^4.0.1",
     "@octokit/auth-token": "^4.0.0",
     "@octokit/plugin-retry": "^6.0.1",
-    "@primer/octicons": "^19.8.0",
+    "@primer/octicons": "^19.9.0",
     "luxon": "^3.1.0",
     "semver": "^7.6.0"
   }
