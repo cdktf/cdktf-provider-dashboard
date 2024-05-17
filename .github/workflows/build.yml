@@ -74,7 +74,7 @@ jobs:
           name: build-artifact
           path: _site
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3    # TSCCR: could not find entry for peaceiris/actions-gh-pages
+        uses: peaceiris/actions-gh-pages@v3     # TSCCR: could not find entry for peaceiris/actions-gh-pages
         with:
           publish_dir: ./_site
           github_token: ${{ secrets.GITHUB_TOKEN }}
