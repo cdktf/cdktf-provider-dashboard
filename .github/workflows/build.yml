@@ -34,12 +34,12 @@ jobs:
       statuses: read
     steps:
       - name: Checkout
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ env.GIT_REF }}
           repository: ${{ env.GIT_REPO }}
       - name: Setup Node.js
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
           node-version: 18
       - name: Install dependencies
@@ -51,7 +51,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Site
         run: yarn build
-      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+      - uses: actions/upload-artifact@89ef406dd8d7e03cfd12d9e0a4a378f454709029 # v4.3.5
         id: artifact-upload-step
         with:
           name: build-artifact
@@ -68,13 +68,13 @@ jobs:
       pages: write
     steps:
       - name: Checkout
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4.1.7
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: build-artifact
           path: _site
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3      # TSCCR: could not find entry for peaceiris/actions-gh-pages
+        uses: peaceiris/actions-gh-pages@v3       # TSCCR: could not find entry for peaceiris/actions-gh-pages
         with:
           publish_dir: ./_site
           github_token: ${{ secrets.GITHUB_TOKEN }}
