@@ -9,6 +9,7 @@ const { retry } = require("@octokit/plugin-retry");
 const fs = require("fs").promises;
 const { createActionAuth } = require("@octokit/auth-action");
 const { createTokenAuth } = require("@octokit/auth-token");
+const semver = require("semver");
 
 async function processWorkflows(data) {
   const runSet = {};
@@ -235,7 +236,7 @@ async function getLatestProviderVersion(name, url) {
         published: data.attributes["published-at"],
       }))
       .sort((a, b) =>
-        a.published < b.published ? 1 : a.published > b.published ? -1 : 0
+        semver.lt(a.version, b.version) ? 1 : semver.gt(a.version, b.version) ? -1 : a.published < b.published ? 1 : a.published > b.published ? -1 : 0
       )[0].version;
 
     return providerVersion;
