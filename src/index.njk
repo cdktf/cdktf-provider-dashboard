@@ -6,48 +6,48 @@ layout: base
  SPDX-License-Identifier: MPL-2.0
 -->
 <main class="w-screen">
-<h1 class="text-4xl font-bold mt-3 flex flex-row space-x-2 items-center ml-4">
+<h1 class="text-4xl font-bold text-slate-900 dark:text-slate-100 mt-3 flex flex-row space-x-2 items-center ml-4">
     <span>CDKTF Pre-built provider health dashboard</span>
-    <a href="https://github.com/mutahhir/check-prebuilt-provider-status" target="_blank">
-        <span >{% githubIcon 'repo' %}</span>
+    <a href="https://github.com/cdktf/cdktf-provider-dashboard" target="_blank">
+        <span class="fill-slate-700 dark:fill-slate-300">{% githubIcon 'repo' %}</span>
     </a>
 </h1>
-<p class="text-xs uppercase ml-4">Last Updated: {{page.date.toUTCString()}}</p>
-<p class="text-xs uppercase ml-4">Latest CDKTF: {{repos[0].latestCdktfVersion}}</p>
-<p class="text-xs uppercase ml-4 mb-6">
+<p class="text-xs uppercase text-slate-700 dark:text-slate-300 ml-4">Last Updated: {{page.date.toUTCString()}}</p>
+<p class="text-xs uppercase text-slate-700 dark:text-slate-300 ml-4">Latest CDKTF: {{repos[0].latestCdktfVersion}}</p>
+<p class="text-xs uppercase text-slate-700 dark:text-slate-300 ml-4 mb-6">
     Total Providers: {{repos.length}}, of which {{repos[0].numArchived}} {% if repos[0].numArchived === 1 %}is{% else %}are{% endif %} deprecated & archived
 </p>
 <div class="flex flex-row flex-wrap">
 {% for repo in repos | sortRepos %}
     <!-- Card -->
-    <div class="bg-gray-100 rounded p-2 drop-shadow-md m-4 max-w-sm">
+    <div class="bg-slate-100 dark:bg-slate-800 rounded p-2 drop-shadow-md m-4 max-w-sm">
         <!-- Provider Header -->
-        <h2 class="text-xl capitalize font-bold flex flex-row items-center space-x-2 ml-2 text-gray-600">
+        <h2 class="text-xl capitalize font-bold flex flex-row items-center space-x-2 ml-2 text-slate-700 dark:text-slate-300">
             <a href={{repo.html_url}} target="_blank">{{ repo.name.replace("cdktf-provider-", "") }}</a>
             {% if repo.archived %}
             <a class="flex flex-row items-center space-x-1" href="{{repo.html_url}}/issues">
-                <span class="fill-gray-500">{% githubIcon 'archive' %}</span>
+                <span class="fill-slate-600 dark:fill-slate-400">{% githubIcon 'archive' %}</span>
             </a>
             {% else %}
             <a class="flex flex-row items-center space-x-1" href="{{repo.html_url}}/issues">
-                <span class="fill-gray-500">{% githubIcon 'issue-opened' %}</span>
-                <span class="text-xs {{ "text-green-500" if repo.issues.length === 0 else "text-red-500 " }}">{{ repo.issues.length }}</span>
+                <span class="fill-slate-600 dark:fill-slate-400">{% githubIcon 'issue-opened' %}</span>
+                <span class="text-xs {{ "text-emerald-500 dark:text-emerald-400" if repo.issues.length === 0 else "text-rose-500 dark:text-rose-400" }}">{{ repo.issues.length }}</span>
             </a>
             <a class="flex flex-row items-center space-x-1" href="{{repo.html_url}}/pulls">
-                <span class="fill-gray-500">{% githubIcon 'git-pull-request' %}</span>
-                <span class="text-xs {{ "text-gray-500" if repo.pulls.length === 0 else "text-red-500 " }}">{{ repo.pulls.length }}</span>
+                <span class="fill-slate-600 dark:fill-slate-400">{% githubIcon 'git-pull-request' %}</span>
+                <span class="text-xs {{ "text-slate-500 dark:text-slate-400" if repo.pulls.length === 0 else "text-rose-500 dark:text-rose-400" }}">{{ repo.pulls.length }}</span>
             </a>
             {% endif %}
         </h2>
         <!-- Github and Provider Release -->
-        <h3 class="text-sm capitalize flex flex-row items-center space-x-2 ml-2 text-gray-600 max-w-sm">
+        <h3 class="text-sm capitalize flex flex-row items-center space-x-2 ml-2 text-slate-700 dark:text-slate-300 max-w-sm">
             <a class="flex flex-row items-center space-x-1" href="{{repo.html_url}}/issues">
-                <span>{% githubIcon 'tag' %}</span>
+                <span class="fill-slate-600 dark:fill-slate-400">{% githubIcon 'tag' %}</span>
                 <a href={{repo.latestRelease.html_url}} target="_blank">{{ repo.latestRelease.tag_name }}</a>
             </a>
             <span title="Provider Version" class="flex flex-row items-center space-x-1">
                 {% if repo.packageJson.cdktf.provider.version | isMajorDiff(repo.provider.latestVersion) %}
-                    <span class="fill-red-600">{% githubIcon 'alert-fill' %}</span>
+                    <span class="fill-rose-600 dark:fill-rose-400">{% githubIcon 'alert-fill' %}</span>
                 {% endif %}
                 <span>{{ repo.packageJson.cdktf.provider.version }} / </span> <span>{{repo.provider.latestVersion}}</span>
             </span>
@@ -55,21 +55,21 @@ layout: base
             <span>{{ repo.latestRelease.published_at | daysAgo }}</span>
         </h2>
         <!-- Package Manager Releases -->
-        <h3 class="text-sm capitalize flex flex-row items-center space-x-2 ml-2 text-gray-600 max-w-sm">
-            <span>{% if repo.packageManagerVersions.npm.isDeprecated %}{% githubIcon 'moon' %}{% else %}{% githubIcon 'globe' %}{% endif %}</span>
-            <a class="flex flex-row items-center space-x-1 {{ "text-red-600" if ("v" + repo.packageManagerVersions.npm.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.npm.packageUrl}}>
+        <h3 class="text-sm capitalize flex flex-row items-center space-x-2 ml-2 text-slate-700 dark:text-slate-300 max-w-sm">
+            <span class="fill-slate-600 dark:fill-slate-400">{% if repo.packageManagerVersions.npm.isDeprecated %}{% githubIcon 'moon' %}{% else %}{% githubIcon 'globe' %}{% endif %}</span>
+            <a class="flex flex-row items-center space-x-1 {{ "text-rose-600" if ("v" + repo.packageManagerVersions.npm.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.npm.packageUrl}}>
                 Npm: {{repo.packageManagerVersions.npm.version}}</a>
             </a>
-            <a class="flex flex-row items-center space-x-1 {{ "text-red-600" if ("v" + repo.packageManagerVersions.maven.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.maven.packageUrl}}>
+            <a class="flex flex-row items-center space-x-1 {{ "text-rose-600" if ("v" + repo.packageManagerVersions.maven.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.maven.packageUrl}}>
                 Maven: {{repo.packageManagerVersions.maven.version}}</a>
             </a>
-            <a class="flex flex-row items-center space-x-1 {{ "text-red-600" if ("v" + repo.packageManagerVersions.pypi.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.pypi.packageUrl}}>
+            <a class="flex flex-row items-center space-x-1 {{ "text-rose-600" if ("v" + repo.packageManagerVersions.pypi.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.pypi.packageUrl}}>
                 PyPI: {{repo.packageManagerVersions.pypi.version}}</a>
             </a>
-            <a class="flex flex-row items-center space-x-1 {{ "text-red-600" if ("v" + repo.packageManagerVersions.nuget.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.nuget.packageUrl}}>
+            <a class="flex flex-row items-center space-x-1 {{ "text-rose-600" if ("v" + repo.packageManagerVersions.nuget.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.nuget.packageUrl}}>
                 NuGet: {{repo.packageManagerVersions.nuget.version}}</a>
             </a>
-            <a class="flex flex-row items-center space-x-1 {{ "text-red-600" if ("v" + repo.packageManagerVersions.go.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.go.packageUrl}}>
+            <a class="flex flex-row items-center space-x-1 {{ "text-rose-600" if ("v" + repo.packageManagerVersions.go.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.go.packageUrl}}>
                 Go: {{repo.packageManagerVersions.go.version}}</a>
             </a>
         </h2>
@@ -78,7 +78,7 @@ layout: base
             {% for workflow in repo.workflows | sortWorkflows %}
                 <li class="m-1">
                     <a href={{workflow[1][0].html_url}} target="_blank">
-                        <div class="text-sm p-1 rounded {{ "bg-red-400" if workflow[1][0].conclusion === "failure" else "bg-green-300" }}">{{workflow[0]}} <span class="text-xs block text-gray-600">{{workflow[1][0].created_at | daysAgo }}</span></div>
+                        <div class="text-sm text-slate-900 p-1 rounded {{ "bg-rose-400" if workflow[1][0].conclusion === "failure" else "bg-emerald-300 dark:bg-emerald-400" }}">{{workflow[0]}} <span class="text-xs block text-slate-700">{{workflow[1][0].created_at | daysAgo }}</span></div>
                     </a>
                 </li>
             {% endfor %}
