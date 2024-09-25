@@ -126,15 +126,20 @@ function convertRepoNameForLanguage(repoName, language) {
 
 async function getNpmPackageVersion(repoName) {
   const packageName = convertRepoNameForLanguage(repoName, "typescript");
-
   const url = `https://registry.npmjs.org/${packageName}/latest`;
-  const response = await fetch(url, {
-    signal: AbortSignal.timeout(5000), // timeout the API call after 5 seconds
-  });
-  if (!response.ok) {
+  let data;
+
+  try {
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(5000), // timeout the API call after 5 seconds
+    });
+    if (!response.ok) {
+      return null;
+    }
+    data = await response.json();
+  } catch (e) {
     return null;
   }
-  const data = await response.json();
 
   return {
     version: data.version,
@@ -145,15 +150,20 @@ async function getNpmPackageVersion(repoName) {
 
 async function getPypiPackageVersion(repoName) {
   const packageName = convertRepoNameForLanguage(repoName, "python");
-
   const url = `https://pypi.org/pypi/${packageName}/json`;
-  const response = await fetch(url, {
-    signal: AbortSignal.timeout(5000), // timeout the API call after 5 seconds
-  });
-  if (!response.ok) {
+  let data;
+
+  try {
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(5000), // timeout the API call after 5 seconds
+    });
+    if (!response.ok) {
+      return null;
+    }
+    data = await response.json();
+  } catch (e) {
     return null;
   }
-  const data = await response.json();
 
   return {
     version: data.info.version,
@@ -165,15 +175,19 @@ async function getPypiPackageVersion(repoName) {
 async function getMavenPackageVersion(repoName) {
   const packageName = convertRepoNameForLanguage(repoName, "java");
   const url = `https://search.maven.org/solrsearch/select?q=a:${packageName}&rows=20&wt=json`;
-  const response = await fetch(url, {
-    signal: AbortSignal.timeout(10000), // timeout the API call after 10 seconds
-  });
-  if (!response.ok) {
-    return null;
-  }
-  const data = await response.json();
+  let doc;
 
-  const doc = data.response.docs[0];
+  try {
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(10000), // timeout the API call after 10 seconds
+    });
+    if (!response.ok) {
+      return null;
+    }
+    const data = await response.json();
+    doc = data.response.docs[0];
+  } catch (e) {}
+
   if (!doc) return null;
   return {
     version: doc.latestVersion,
@@ -185,15 +199,19 @@ async function getMavenPackageVersion(repoName) {
 async function getNuGetPackageVersion(repoName) {
   const packageName = convertRepoNameForLanguage(repoName, "csharp");
   const url = `https://azuresearch-usnc.nuget.org/query?q=${packageName}&prerelease=false`;
-  const response = await fetch(url, {
-    signal: AbortSignal.timeout(10000), // timeout the API call after 10 seconds
-  });
-  if (!response.ok) {
-    return null;
-  }
-  const data = await response.json();
+  let info;
 
-  const info = data.data[0];
+  try {
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(10000), // timeout the API call after 10 seconds
+    });
+    if (!response.ok) {
+      return null;
+    }
+    const data = await response.json();
+    info = data.data[0];
+  } catch (e) {}
+
   if (!info) return null;
   return {
     version: info.version,
@@ -205,14 +223,18 @@ async function getGoReleaseVersion(repoName) {
   const packageName = convertRepoNameForLanguage(repoName, "go");
   const goRepoName = repoName + "-go";
   const allTagsUrl = `https://api.github.com/repos/cdktf/${goRepoName}/tags`;
-  const response = await fetch(allTagsUrl, {
-    signal: AbortSignal.timeout(10000), // timeout the API call after 10 seconds
-  });
-  if (!response.ok) {
-    return null;
-  }
-  const data = await response.json();
-  const firstTag = data[0];
+  let firstTag;
+
+  try {
+    const response = await fetch(allTagsUrl, {
+      signal: AbortSignal.timeout(10000), // timeout the API call after 10 seconds
+    });
+    if (!response.ok) {
+      return null;
+    }
+    const data = await response.json();
+    firstTag = data[0];
+  } catch (e) {}
 
   if (!firstTag) {
     return {
@@ -229,10 +251,16 @@ async function getGoReleaseVersion(repoName) {
 }
 
 async function getLatestCdktfVersion() {
-  const response = await fetch(`https://registry.npmjs.org/cdktf`, {
-    signal: AbortSignal.timeout(5000), // timeout the API call after 5 seconds
-  });
-  const data = await response.json();
+  let data;
+
+  try {
+    const response = await fetch(`https://registry.npmjs.org/cdktf`, {
+      signal: AbortSignal.timeout(5000), // timeout the API call after 5 seconds
+    });
+    data = await response.json();
+  } catch (e) {
+    return null;
+  }
 
   return data["dist-tags"].latest;
 }
