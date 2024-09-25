@@ -128,7 +128,9 @@ async function getNpmPackageVersion(repoName) {
   const packageName = convertRepoNameForLanguage(repoName, "typescript");
 
   const url = `https://registry.npmjs.org/${packageName}/latest`;
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(5000), // timeout the API call after 5 seconds
+  });
   if (!response.ok) {
     return null;
   }
@@ -145,7 +147,9 @@ async function getPypiPackageVersion(repoName) {
   const packageName = convertRepoNameForLanguage(repoName, "python");
 
   const url = `https://pypi.org/pypi/${packageName}/json`;
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(5000), // timeout the API call after 5 seconds
+  });
   if (!response.ok) {
     return null;
   }
@@ -161,7 +165,9 @@ async function getPypiPackageVersion(repoName) {
 async function getMavenPackageVersion(repoName) {
   const packageName = convertRepoNameForLanguage(repoName, "java");
   const url = `https://search.maven.org/solrsearch/select?q=a:${packageName}&rows=20&wt=json`;
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(10000), // timeout the API call after 10 seconds
+  });
   if (!response.ok) {
     return null;
   }
@@ -179,7 +185,9 @@ async function getMavenPackageVersion(repoName) {
 async function getNuGetPackageVersion(repoName) {
   const packageName = convertRepoNameForLanguage(repoName, "csharp");
   const url = `https://azuresearch-usnc.nuget.org/query?q=${packageName}&prerelease=false`;
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(10000), // timeout the API call after 10 seconds
+  });
   if (!response.ok) {
     return null;
   }
@@ -197,7 +205,9 @@ async function getGoReleaseVersion(repoName) {
   const packageName = convertRepoNameForLanguage(repoName, "go");
   const goRepoName = repoName + "-go";
   const allTagsUrl = `https://api.github.com/repos/cdktf/${goRepoName}/tags`;
-  const response = await fetch(allTagsUrl);
+  const response = await fetch(allTagsUrl, {
+    signal: AbortSignal.timeout(10000), // timeout the API call after 10 seconds
+  });
   if (!response.ok) {
     return null;
   }
@@ -219,7 +229,9 @@ async function getGoReleaseVersion(repoName) {
 }
 
 async function getLatestCdktfVersion() {
-  const response = await fetch(`https://registry.npmjs.org/cdktf`);
+  const response = await fetch(`https://registry.npmjs.org/cdktf`, {
+    signal: AbortSignal.timeout(5000), // timeout the API call after 5 seconds
+  });
   const data = await response.json();
 
   return data["dist-tags"].latest;
@@ -229,7 +241,7 @@ async function getLatestProviderVersion(name, url) {
   console.log("Fetching provider info: ", name);
   try {
     const response = await fetch(url, {
-      signal: AbortSignal.timeout(60000), // timeout the API call after 60 seconds
+      signal: AbortSignal.timeout(30000), // timeout the API call after 30 seconds
     });
     const data = await response.json();
     const providerVersion = data.included

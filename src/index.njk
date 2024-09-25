@@ -58,19 +58,19 @@ layout: base
         <h3 class="text-sm capitalize flex flex-row items-center space-x-2 ml-2 text-slate-700 dark:text-slate-300 max-w-sm">
             <span class="fill-slate-600 dark:fill-slate-400">{% if repo.packageManagerVersions.npm.isDeprecated %}{% githubIcon 'moon' %}{% else %}{% githubIcon 'globe' %}{% endif %}</span>
             <a class="flex flex-row items-center space-x-1 {{ "text-rose-600" if ("v" + repo.packageManagerVersions.npm.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.npm.packageUrl}}>
-                Npm: {{repo.packageManagerVersions.npm.version}}</a>
+                Npm: {{ repo.packageManagerVersions.npm.version | default("?", true) }}</a>
             </a>
             <a class="flex flex-row items-center space-x-1 {{ "text-rose-600" if ("v" + repo.packageManagerVersions.maven.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.maven.packageUrl}}>
-                Maven: {{repo.packageManagerVersions.maven.version}}</a>
+                Maven: {{ repo.packageManagerVersions.maven.version | default("?", true) }}</a>
             </a>
             <a class="flex flex-row items-center space-x-1 {{ "text-rose-600" if ("v" + repo.packageManagerVersions.pypi.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.pypi.packageUrl}}>
-                PyPI: {{repo.packageManagerVersions.pypi.version}}</a>
+                PyPI: {{ repo.packageManagerVersions.pypi.version | default("?", true) }}</a>
             </a>
             <a class="flex flex-row items-center space-x-1 {{ "text-rose-600" if ("v" + repo.packageManagerVersions.nuget.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.nuget.packageUrl}}>
-                NuGet: {{repo.packageManagerVersions.nuget.version}}</a>
+                NuGet: {{ repo.packageManagerVersions.nuget.version | default("?", true) }}</a>
             </a>
             <a class="flex flex-row items-center space-x-1 {{ "text-rose-600" if ("v" + repo.packageManagerVersions.go.version) !== repo.latestRelease.tag_name }}" href={{repo.packageManagerVersions.go.packageUrl}}>
-                Go: {{repo.packageManagerVersions.go.version}}</a>
+                Go: {{ repo.packageManagerVersions.go.version | default("?", true) }}</a>
             </a>
         </h2>
         {% if repo.archived !== true %}
