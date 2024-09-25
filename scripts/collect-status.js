@@ -228,7 +228,9 @@ async function getLatestCdktfVersion() {
 async function getLatestProviderVersion(name, url) {
   console.log("Fetching provider info: ", name);
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(60000), // timeout the API call after 60 seconds
+    });
     const data = await response.json();
     const providerVersion = data.included
       .map((data) => ({
