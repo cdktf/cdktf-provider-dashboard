@@ -138,6 +138,9 @@ async function getNpmPackageVersion(repoName) {
     }
     data = await response.json();
   } catch (e) {
+    if (e.name === "TimeoutError" || e.name === "AbortError") {
+      console.error(`Request to ${url} timed out after 5 seconds`);
+    }
     return null;
   }
 
@@ -162,6 +165,9 @@ async function getPypiPackageVersion(repoName) {
     }
     data = await response.json();
   } catch (e) {
+    if (e.name === "TimeoutError" || e.name === "AbortError") {
+      console.error(`Request to ${url} timed out after 5 seconds`);
+    }
     return null;
   }
 
@@ -186,7 +192,11 @@ async function getMavenPackageVersion(repoName) {
     }
     const data = await response.json();
     doc = data.response.docs[0];
-  } catch (e) {}
+  } catch (e) {
+    if (e.name === "TimeoutError" || e.name === "AbortError") {
+      console.error(`Request to ${url} timed out after 10 seconds`);
+    }
+  }
 
   if (!doc) return null;
   return {
@@ -210,7 +220,11 @@ async function getNuGetPackageVersion(repoName) {
     }
     const data = await response.json();
     info = data.data[0];
-  } catch (e) {}
+  } catch (e) {
+    if (e.name === "TimeoutError" || e.name === "AbortError") {
+      console.error(`Request to ${url} timed out after 10 seconds`);
+    }
+  }
 
   if (!info) return null;
   return {
@@ -234,7 +248,11 @@ async function getGoReleaseVersion(repoName) {
     }
     const data = await response.json();
     firstTag = data[0];
-  } catch (e) {}
+  } catch (e) {
+    if (e.name === "TimeoutError" || e.name === "AbortError") {
+      console.error(`Request to ${allTagsUrl} timed out after 10 seconds`);
+    }
+  }
 
   if (!firstTag) {
     return {
@@ -251,14 +269,18 @@ async function getGoReleaseVersion(repoName) {
 }
 
 async function getLatestCdktfVersion() {
+  const url = "https://registry.npmjs.org/cdktf";
   let data;
 
   try {
-    const response = await fetch(`https://registry.npmjs.org/cdktf`, {
+    const response = await fetch(url, {
       signal: AbortSignal.timeout(5000), // timeout the API call after 5 seconds
     });
     data = await response.json();
   } catch (e) {
+    if (e.name === "TimeoutError" || e.name === "AbortError") {
+      console.error(`Request to ${url} timed out after 5 seconds`);
+    }
     return null;
   }
 
@@ -284,6 +306,9 @@ async function getLatestProviderVersion(name, url) {
     return providerVersion;
   } catch (e) {
     console.log("Unable to fetch provider info: ", name);
+    if (e.name === "TimeoutError" || e.name === "AbortError") {
+      console.error(`Request to ${url} timed out after 30 seconds`);
+    }
     return "999.999.999"
   }
 }
