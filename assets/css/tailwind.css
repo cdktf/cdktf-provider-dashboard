@@ -652,8 +652,8 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.fill-rose-600 {
-  fill: #e11d48;
+.fill-rose-500 {
+  fill: #f43f5e;
 }
 
 .fill-slate-600 {
@@ -755,10 +755,6 @@ video {
   .dark\:bg-slate-900 {
     --tw-bg-opacity: 1;
     background-color: rgb(15 23 42 / var(--tw-bg-opacity));
-  }
-
-  .dark\:fill-rose-400 {
-    fill: #fb7185;
   }
 
   .dark\:fill-slate-300 {
