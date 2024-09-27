@@ -47,7 +47,7 @@ layout: base
             </a>
             <span title="Provider Version" class="flex flex-row items-center space-x-1">
                 {% if repo.packageJson.cdktf.provider.version | isMajorDiff(repo.provider.latestVersion) %}
-                    <span class="fill-rose-600 dark:fill-rose-400">{% githubIcon 'alert-fill' %}</span>
+                    <span class="fill-rose-500">{% githubIcon 'alert-fill' %}</span>
                 {% endif %}
                 <span>{{ repo.packageJson.cdktf.provider.version }} / </span> <span>{{repo.provider.latestVersion}}</span>
             </span>
