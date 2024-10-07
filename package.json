@@ -16,7 +16,7 @@
     "build:css": "tailwindcss -i src/assets/css/tailwind.css -o _site/assets/css/tailwind.css --postcss"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy": "^3.0.0",
     "@octokit/core": "^5.2.0",
     "@octokit/plugin-paginate-rest": "^9.2.1",
     "@octokit/plugin-throttling": "^8.2.0",
