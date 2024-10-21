@@ -113,7 +113,7 @@
   --tw-contain-style:  ;
 }
 
-/*! tailwindcss v3.4.13 | MIT License | https://tailwindcss.com
+/*! tailwindcss v3.4.14 | MIT License | https://tailwindcss.com
  */
 
 /*
@@ -556,7 +556,7 @@ video {
 
 /* Make elements with the HTML hidden attribute stay hidden by default */
 
-[hidden] {
+[hidden]:where(:not([hidden="until-found"])) {
   display: none;
 }
 
