@@ -113,7 +113,7 @@
   --tw-contain-style:  ;
 }
 
-/*! tailwindcss v3.4.14 | MIT License | https://tailwindcss.com
+/*! tailwindcss v3.4.15 | MIT License | https://tailwindcss.com
  */
 
 /*
@@ -634,22 +634,22 @@ video {
 
 .bg-emerald-300 {
   --tw-bg-opacity: 1;
-  background-color: rgb(110 231 183 / var(--tw-bg-opacity));
+  background-color: rgb(110 231 183 / var(--tw-bg-opacity, 1));
 }
 
 .bg-rose-400 {
   --tw-bg-opacity: 1;
-  background-color: rgb(251 113 133 / var(--tw-bg-opacity));
+  background-color: rgb(251 113 133 / var(--tw-bg-opacity, 1));
 }
 
 .bg-slate-100 {
   --tw-bg-opacity: 1;
-  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
 }
 
 .bg-white {
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
 .fill-rose-500 {
@@ -706,27 +706,27 @@ video {
 
 .text-emerald-500 {
   --tw-text-opacity: 1;
-  color: rgb(16 185 129 / var(--tw-text-opacity));
+  color: rgb(16 185 129 / var(--tw-text-opacity, 1));
 }
 
 .text-rose-500 {
   --tw-text-opacity: 1;
-  color: rgb(244 63 94 / var(--tw-text-opacity));
+  color: rgb(244 63 94 / var(--tw-text-opacity, 1));
 }
 
 .text-slate-500 {
   --tw-text-opacity: 1;
-  color: rgb(100 116 139 / var(--tw-text-opacity));
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
 }
 
 .text-slate-700 {
   --tw-text-opacity: 1;
-  color: rgb(51 65 85 / var(--tw-text-opacity));
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
 }
 
 .text-slate-900 {
   --tw-text-opacity: 1;
-  color: rgb(15 23 42 / var(--tw-text-opacity));
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
 }
 
 .drop-shadow-md {
@@ -744,17 +744,17 @@ video {
 @media (prefers-color-scheme: dark) {
   .dark\:bg-emerald-400 {
     --tw-bg-opacity: 1;
-    background-color: rgb(52 211 153 / var(--tw-bg-opacity));
+    background-color: rgb(52 211 153 / var(--tw-bg-opacity, 1));
   }
 
   .dark\:bg-slate-800 {
     --tw-bg-opacity: 1;
-    background-color: rgb(30 41 59 / var(--tw-bg-opacity));
+    background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1));
   }
 
   .dark\:bg-slate-900 {
     --tw-bg-opacity: 1;
-    background-color: rgb(15 23 42 / var(--tw-bg-opacity));
+    background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
   }
 
   .dark\:fill-slate-300 {
@@ -767,21 +767,21 @@ video {
 
   .dark\:text-emerald-400 {
     --tw-text-opacity: 1;
-    color: rgb(52 211 153 / var(--tw-text-opacity));
+    color: rgb(52 211 153 / var(--tw-text-opacity, 1));
   }
 
   .dark\:text-slate-100 {
     --tw-text-opacity: 1;
-    color: rgb(241 245 249 / var(--tw-text-opacity));
+    color: rgb(241 245 249 / var(--tw-text-opacity, 1));
   }
 
   .dark\:text-slate-300 {
     --tw-text-opacity: 1;
-    color: rgb(203 213 225 / var(--tw-text-opacity));
+    color: rgb(203 213 225 / var(--tw-text-opacity, 1));
   }
 
   .dark\:text-slate-400 {
     --tw-text-opacity: 1;
-    color: rgb(148 163 184 / var(--tw-text-opacity));
+    color: rgb(148 163 184 / var(--tw-text-opacity, 1));
   }
 }
