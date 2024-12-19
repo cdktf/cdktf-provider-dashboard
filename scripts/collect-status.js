@@ -294,14 +294,15 @@ async function getLatestProviderVersion(name, url) {
       signal: AbortSignal.timeout(30000), // timeout the API call after 30 seconds
     });
     const data = await response.json();
-    const providerVersion = data.included
+    const sortedVersions = data.included
       .map((data) => ({
         version: data.attributes.version,
         published: data.attributes["published-at"],
       }))
       .sort((a, b) =>
         semver.lt(a.version, b.version) ? 1 : semver.gt(a.version, b.version) ? -1 : a.published < b.published ? 1 : a.published > b.published ? -1 : 0
-      )[0].version;
+      );
+    const providerVersion = sortedVersions.first((v) => semver.prerelease(v.version) === null);
 
     return providerVersion;
   } catch (e) {
