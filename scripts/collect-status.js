@@ -302,7 +302,7 @@ async function getLatestProviderVersion(name, url) {
       .sort((a, b) =>
         semver.lt(a.version, b.version) ? 1 : semver.gt(a.version, b.version) ? -1 : a.published < b.published ? 1 : a.published > b.published ? -1 : 0
       );
-    const providerVersion = sortedVersions.first((v) => semver.prerelease(v.version) === null);
+    const providerVersion = sortedVersions.find((v) => semver.prerelease(v.version) === null);
 
     return providerVersion;
   } catch (e) {
