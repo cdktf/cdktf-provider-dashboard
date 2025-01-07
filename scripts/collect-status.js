@@ -15,6 +15,10 @@ async function processWorkflows(data) {
   const runSet = {};
   for (const run of data.workflow_runs) {
     const name = run.name;
+    if (name.startsWith("npm_and_yarn")) {
+      // these are Dependabot checks, we don't care about them on this dashboard
+      continue;
+    }
     if (!runSet[name]) {
       runSet[name] = [run];
     } else {
