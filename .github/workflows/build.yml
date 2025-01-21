@@ -74,7 +74,7 @@ jobs:
           name: build-artifact
           path: _site
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3         # TSCCR: could not find entry for peaceiris/actions-gh-pages
+        uses: peaceiris/actions-gh-pages@v3          # TSCCR: could not find entry for peaceiris/actions-gh-pages
         with:
           publish_dir: ./_site
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -88,12 +88,12 @@ jobs:
       contents: read
     steps:
       - name: Send failures to Slack
-        uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0 # v1.27.0
+        uses: slackapi/slack-github-action@485a9d42d3a73031f12ec201c457e2162c45d02d # v2.0.0
         with:
+          webhook: ${{ secrets.FAILURE_SLACK_WEBHOOK_URL }}
+          webhook-type: webhook-trigger
           payload: |
             {
               "name": "cdktf-provider-dashboard",
               "run_url": "https://github.com/cdktf/cdktf-provider-dashboard/actions/runs/${{ github.run_id }}"
             }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.FAILURE_SLACK_WEBHOOK_URL }}
