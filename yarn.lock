@@ -258,10 +258,10 @@
   dependencies:
     "@octokit/types" "^13.5.0"
 
-"@octokit/plugin-paginate-rest@^11.4.1":
-  version "11.4.1"
-  resolved "https://registry.yarnpkg.com/@octokit/plugin-paginate-rest/-/plugin-paginate-rest-11.4.1.tgz#2ad42378683143c59ced0f091404be354e753aa0"
-  integrity sha512-GHQGdIv6Y/I+QzYbQWLVvL6bZhDhCJcwnL381vnX82lpJy4brA3/jRwYN5Lsmc57UhjBG9vH1KvyxgqLYZZGPQ==
+"@octokit/plugin-paginate-rest@^11.4.2":
+  version "11.4.2"
+  resolved "https://registry.yarnpkg.com/@octokit/plugin-paginate-rest/-/plugin-paginate-rest-11.4.2.tgz#8f46a1de74c35e016c86701ef4ea0e8ef25a06e0"
+  integrity sha512-BXJ7XPCTDXFF+wxcg/zscfgw2O/iDPtNSkwwR1W1W5c4Mb3zav/M2XvxQ23nVmKj7jpweB4g8viMeCQdm7LMVA==
   dependencies:
     "@octokit/types" "^13.7.0"
 
