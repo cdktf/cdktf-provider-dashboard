@@ -17,8 +17,8 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
-    "@octokit/core": "^5.2.0",
-    "@octokit/plugin-paginate-rest": "^11.4.3",
+    "@octokit/core": "^5.2.1",
+    "@octokit/plugin-paginate-rest": "^11.6.0",
     "@octokit/plugin-throttling": "^8.2.0",
     "@octokit/rest": "^20.1.2",
     "autoprefixer": "^10.4.20",
