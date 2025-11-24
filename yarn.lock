@@ -329,10 +329,10 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@primer/octicons@^19.18.0":
-  version "19.18.0"
-  resolved "https://registry.yarnpkg.com/@primer/octicons/-/octicons-19.18.0.tgz#630bec5bc0daffe56147a9b9529653f856ded311"
-  integrity sha512-4P8FS7slUp0vHE7zLtlfOQcgF99r0tdxpriT3ahp6iwwnf1hF3OlDWXEp5n6b6G5eIY1cNr1bCrjRL+DkRjFVw==
+"@primer/octicons@^19.21.0":
+  version "19.21.0"
+  resolved "https://registry.yarnpkg.com/@primer/octicons/-/octicons-19.21.0.tgz#d39b1b37b005e9c6e13fd8e7484ee324a4bf36cf"
+  integrity sha512-87buZ9aPlWbbHvTTzPAy9zqqGZpCc/VH+Q6q9OsZou6zCaExjmsINj6rWjP6FxNK5ZWHfF0UFNKQCai72lhaLA==
   dependencies:
     object-assign "^4.1.1"
 
