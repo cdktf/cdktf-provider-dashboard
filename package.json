@@ -32,6 +32,6 @@
     "@octokit/plugin-retry": "^6.1.0",
     "@primer/octicons": "^19.21.1",
     "luxon": "^3.7.2",
-    "semver": "^7.7.2"
+    "semver": "^7.7.3"
   }
 }
